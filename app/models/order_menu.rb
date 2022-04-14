@@ -1,0 +1,2 @@
+class OrderMenu < ApplicationRecord
+end

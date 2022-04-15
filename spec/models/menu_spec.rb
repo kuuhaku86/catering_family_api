@@ -21,6 +21,15 @@ RSpec.describe Menu, type: :model do
         expect(menu.errors[:name]).to include("can't be blank")
       end
 
+      it 'invalid with duplicate name' do
+        menu1 = FactoryBot.create(:menu, name: 'Nasi Kucing')
+        menu2 = FactoryBot.build(:invalid_menu, name: 'Nasi Kucing')
+
+        menu2.valid?
+
+        expect(menu2.errors[:name]).to include("has already been taken")
+      end
+
       it 'invalid without description' do
         menu = FactoryBot.build(:invalid_menu)
         menu.valid?

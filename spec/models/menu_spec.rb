@@ -72,5 +72,15 @@ RSpec.describe Menu, type: :model do
         expect(FactoryBot.build(:menu, :with_categories)).to be_valid
       end
     end
+
+    context 'with invalid attributes' do
+      it 'invalid without category' do
+        menu = FactoryBot.build(:invalid_menu)
+
+        menu.valid?
+
+        expect(menu.errors[:categories]).to include("can't be blank")
+      end
+    end
   end
 end

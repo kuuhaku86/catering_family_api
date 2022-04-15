@@ -17,7 +17,9 @@ RSpec.describe Menu, type: :model do
     context 'with invalid attributes' do
       it 'invalid without name' do
         menu = FactoryBot.build(:invalid_menu)
+
         menu.valid?
+
         expect(menu.errors[:name]).to include("can't be blank")
       end
 
@@ -32,14 +34,25 @@ RSpec.describe Menu, type: :model do
 
       it 'invalid without description' do
         menu = FactoryBot.build(:invalid_menu)
+
         menu.valid?
+
         expect(menu.errors[:description]).to include("can't be blank")
       end
 
       it 'invalid without price' do
         menu = FactoryBot.build(:invalid_menu, price: nil)
+
         menu.valid?
+
         expect(menu.errors[:price]).to include("can't be blank")
+      end
+
+      it 'invalid with price numeric less than 0.01' do
+        menu = FactoryBot.build(:invalid_menu)
+        menu.valid?
+
+        expect(menu.errors[:price]).to include("must be greater than or equal to 0.01")
       end
     end
   end

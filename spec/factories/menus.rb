@@ -1,7 +1,13 @@
 FactoryBot.define do
   factory :menu do
-    name { "MyString" }
+    name { Faker::Food.name }
     price { 1.5 }
-    description { "MyText" }
+    description { Faker::Food.description }
+  end
+
+  factory :invalid_menu, parent: :menu do
+    name { nil }
+    price { 0.001 }
+    description { nil }
   end
 end

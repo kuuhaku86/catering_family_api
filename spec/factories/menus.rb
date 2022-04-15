@@ -2,7 +2,7 @@ FactoryBot.define do
   factory :menu do
     name { Faker::Food.name }
     price { 1.5 }
-    description { Faker::Food.description }
+    description { Faker::Food.description[0, 149] }
   end
 
   factory :invalid_menu, parent: :menu do

@@ -40,6 +40,15 @@ RSpec.describe Menu, type: :model do
         expect(menu.errors[:description]).to include("can't be blank")
       end
 
+      it 'invalid with description more than 150 characters' do
+        description = 'a' * 151
+        menu = FactoryBot.build(:invalid_menu, description: description)
+
+        menu.valid?
+
+        expect(menu.errors[:description]).to include("is too long (maximum is 150 characters)")
+      end
+
       it 'invalid without price' do
         menu = FactoryBot.build(:invalid_menu, price: nil)
 

@@ -20,6 +20,12 @@ RSpec.describe Menu, type: :model do
         menu.valid?
         expect(menu.errors[:name]).to include("can't be blank")
       end
+
+      it 'invalid without description' do
+        menu = FactoryBot.build(:invalid_menu)
+        menu.valid?
+        expect(menu.errors[:description]).to include("can't be blank")
+      end
     end
   end
 end

@@ -3,11 +3,13 @@ FactoryBot.define do
     name { Faker::Food.ethnic_category }
 
     trait :with_menus do
-      menus { build_list :menu, 3 }
+      menus { |category| [category.association(:menu, :with_categories)] }
     end
   end
 
   factory :invalid_category, parent: :category do
     name { nil }
+
+    menus { |menu| [] }
   end
 end

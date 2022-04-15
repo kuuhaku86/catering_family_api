@@ -31,4 +31,12 @@ RSpec.describe Category, type: :model do
       end
     end
   end
+
+  describe '.associations' do
+    context 'with valid attributes' do
+      it 'is valid with menus' do
+        expect(FactoryBot.build(:category, :with_menus)).to be_valid
+      end
+    end
+  end
 end

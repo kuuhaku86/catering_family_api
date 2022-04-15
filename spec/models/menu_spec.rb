@@ -10,7 +10,7 @@ RSpec.describe Menu, type: :model do
   describe '.validations' do
     context 'with valid attributes' do
       it 'is valid with a name, price, and description' do
-        expect(FactoryBot.build(:category)).to be_valid
+        expect(FactoryBot.build(:menu)).to be_valid
       end
     end
   end

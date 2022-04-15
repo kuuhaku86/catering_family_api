@@ -10,12 +10,20 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_04_14_142420) do
+ActiveRecord::Schema.define(version: 2022_04_15_083102) do
 
   create_table "categories", force: :cascade do |t|
     t.string "name"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+  end
+
+  create_table "categories_menus", force: :cascade do |t|
+    t.integer "menu_id"
+    t.integer "category_id"
+    t.index ["category_id"], name: "index_categories_menus_on_category_id"
+    t.index ["menu_id", "category_id"], name: "index_menus_categories_on_menu_id_and_category_id", unique: true
+    t.index ["menu_id"], name: "index_categories_menus_on_menu_id"
   end
 
   create_table "customers", force: :cascade do |t|
@@ -31,14 +39,6 @@ ActiveRecord::Schema.define(version: 2022_04_14_142420) do
     t.text "description"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
-  end
-
-  create_table "menus_categories", force: :cascade do |t|
-    t.integer "menus_id"
-    t.integer "categories_id"
-    t.index "\"menu_id\", \"category_id\"", name: "index_menus_categories_on_menu_id_and_category_id", unique: true
-    t.index ["categories_id"], name: "index_menus_categories_on_categories_id"
-    t.index ["menus_id"], name: "index_menus_categories_on_menus_id"
   end
 
   create_table "orders", force: :cascade do |t|

@@ -58,7 +58,7 @@ class Api::CategoriesController < ApplicationController
       end
     rescue ActiveRecord::RecordNotFound => e
       render json: {
-        message: e.message
+        message: "Category not found"
       }, status: :not_found
     rescue => e
       render json: {

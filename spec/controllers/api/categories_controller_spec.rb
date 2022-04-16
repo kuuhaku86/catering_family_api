@@ -102,6 +102,15 @@ RSpec.describe Api::CategoriesController do
       end
 
       it "does not save duplicate categories" do
+        FactoryBot.create(:category, name: 'Beverages')
+
+        initial_count = Category.count
+
+        post :create, params: @params
+
+        final_count = Category.count
+
+        expect(final_count - initial_count).to eq(0)
       end
 
       it "return error message" do

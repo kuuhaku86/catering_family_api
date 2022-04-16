@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_04_16_040321) do
+ActiveRecord::Schema.define(version: 2022_04_16_055119) do
 
   create_table "categories", force: :cascade do |t|
     t.string "name"
@@ -55,14 +55,14 @@ ActiveRecord::Schema.define(version: 2022_04_16_040321) do
     t.float "total_price"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
-    t.integer "orders_id"
-    t.integer "menus_id"
-    t.index "\"order_id\", \"menu_id\"", name: "index_orders_menus_on_order_id_and_menu_id", unique: true
-    t.index ["menus_id"], name: "index_orders_menus_on_menus_id"
-    t.index ["orders_id"], name: "index_orders_menus_on_orders_id"
+    t.integer "order_id"
+    t.integer "menu_id"
+    t.index ["menu_id"], name: "index_orders_menus_on_menu_id"
+    t.index ["order_id", "menu_id"], name: "index_orders_menus_on_order_id_and_menu_id", unique: true
+    t.index ["order_id"], name: "index_orders_menus_on_order_id"
   end
 
   add_foreign_key "orders", "customers"
-  add_foreign_key "orders_menus", "menus", column: "menus_id"
-  add_foreign_key "orders_menus", "orders", column: "orders_id"
+  add_foreign_key "orders_menus", "menus"
+  add_foreign_key "orders_menus", "orders"
 end

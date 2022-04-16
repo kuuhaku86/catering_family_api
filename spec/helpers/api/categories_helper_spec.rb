@@ -11,27 +11,5 @@ require 'rails_helper'
 #   end
 # end
 RSpec.describe Api::CategoriesHelper, type: :helper do
-  describe 'GET #index' do
-    context 'with params[:id]' do
-      it "populates an category object" do
-      end
-
-      it "response with json content type" do
-      end
-
-      it "response with valid json object" do
-      end
-    end
-
-    context 'without params[:id]' do
-      it "populates an array of all categories" do 
-      end
-
-      it "response with json content type" do
-      end
-
-      it "response with valid json object" do
-      end
-    end
-  end
+  pending "add some examples to (or delete) #{__FILE__}"
 end

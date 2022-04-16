@@ -4,7 +4,8 @@ RSpec.describe Api::CategoriesController do
   describe 'GET #index' do
     before :all do
       @category1 = create(:category)
-      @category1 = create(:category)
+      @category2 = create(:category)
+      @categories = [@category1, @category2]
     end
 
     context 'with params[:id]' do
@@ -30,7 +31,12 @@ RSpec.describe Api::CategoriesController do
     end
 
     context 'without params[:id]' do
+      subject { @categories }
+
       it "populates an array of all categories" do 
+        get :index
+
+        expect(response.body).to eq(@categories.to_json)
       end
 
       it "response with json content type" do

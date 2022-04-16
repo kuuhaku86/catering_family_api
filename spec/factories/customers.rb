@@ -11,5 +11,7 @@ FactoryBot.define do
   factory :invalid_customer, parent: :customer do
     name { nil }
     email { nil }
+
+    orders { |customer| [] }
   end
 end

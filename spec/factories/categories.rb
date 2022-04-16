@@ -1,6 +1,8 @@
+require 'securerandom'
+
 FactoryBot.define do
   factory :category do
-    name { Faker::Food.ethnic_category }
+    name { SecureRandom.base58(24) }
 
     trait :with_menus do
       menus { |category| [category.association(:menu, :with_categories)] }

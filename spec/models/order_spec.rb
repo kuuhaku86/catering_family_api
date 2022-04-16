@@ -35,5 +35,13 @@ RSpec.describe Order, type: :model do
         expect(FactoryBot.build(:order)).to be_valid
       end
     end
+
+    context 'with invalid attributes' do
+      it 'invalid without customer' do
+        order = FactoryBot.build(:invalid_order)
+        order.valid?
+        expect(order.errors[:customer]).to include("can't be blank")
+      end
+    end
   end
 end

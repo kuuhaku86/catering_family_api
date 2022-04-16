@@ -1,6 +1,8 @@
+require 'securerandom'
+
 FactoryBot.define do
   factory :menu do
-    name { Faker::Food.name }
+    name { SecureRandom.base58(24) }
     price { 1.5 }
     description { Faker::Food.description[0, 149] }
 

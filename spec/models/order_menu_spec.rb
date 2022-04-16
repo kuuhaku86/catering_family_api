@@ -34,6 +34,10 @@ RSpec.describe OrderMenu, type: :model do
       it 'is valid with order' do
         expect(FactoryBot.build(:order_menu)).to be_valid
       end
+
+      it 'is valid with menu' do
+        expect(FactoryBot.build(:order_menu)).to be_valid
+      end
     end
 
     context 'with invalid attributes' do

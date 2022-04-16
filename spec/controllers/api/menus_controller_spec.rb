@@ -49,7 +49,10 @@ RSpec.describe Api::MenusController do
         expect(menu.categories[1].id).to eq @categories[1].id 
       end
 
-      it "return category object" do
+      it "return menu object" do
+        post :create, params: @params
+
+        expect(response.body).to eq Menu.last.to_json
       end
     end
 

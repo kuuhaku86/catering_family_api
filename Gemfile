@@ -81,4 +81,5 @@ group :development, :test do
   gem "faker"
   gem "rails-controller-testing"
   gem "database_cleaner"
+  gem "ruby_deep_clone"
 end

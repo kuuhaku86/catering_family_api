@@ -1,4 +1,5 @@
 require 'rails_helper'
+require 'deep_clone'
 
 RSpec.describe Api::MenusController do
   before :each do
@@ -83,7 +84,7 @@ RSpec.describe Api::MenusController do
       end
 
       it "does not save price < 0.01" do
-        params = @params.dup
+        params = DeepClone.clone @params
         params[:menu][:price] = 0.001
         initial_count = Menu.count
 
@@ -97,6 +98,17 @@ RSpec.describe Api::MenusController do
       end
 
       it "does not save description exceed 150 characters" do
+        params = DeepClone.clone @params
+        params[:menu][:description] = "a" * 151
+        initial_count = Menu.count
+
+        post :create, params: params
+
+        final_count = Menu.count
+
+        expect(final_count - initial_count).to eq(0)
+        expect(response.body).to eq({ message: "Description is too long (maximum is 150 characters)" }.to_json)
+        expect(response.status).to eq 422
       end
 
       it "does not save if don't have any category" do

@@ -209,6 +209,7 @@ GEM
       rspec-mocks (~> 3.10)
       rspec-support (~> 3.10)
     rspec-support (3.11.0)
+    ruby_deep_clone (0.8.0)
     rubyzip (2.3.2)
     selenium-webdriver (4.1.0)
       childprocess (>= 0.5, < 5.0)
@@ -269,6 +270,7 @@ DEPENDENCIES
   rails-controller-testing
   rdoc
   rspec-rails
+  ruby_deep_clone
   selenium-webdriver
   sprockets-rails
   sqlite3 (~> 1.4)

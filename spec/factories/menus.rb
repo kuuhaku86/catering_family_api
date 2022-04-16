@@ -5,7 +5,7 @@ FactoryBot.define do
     description { Faker::Food.description[0, 149] }
 
     trait :with_categories do
-      categories { build_list :category, 3 }
+      categories { build_list :category, 2 }
     end
   end
 

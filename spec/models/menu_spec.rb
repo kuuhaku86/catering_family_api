@@ -1,6 +1,14 @@
 require 'rails_helper'
 
 RSpec.describe Menu, type: :model do
+  before :each do
+    DatabaseCleaner.clean_with :truncation
+  end
+
+  after :each do
+    DatabaseCleaner.clean_with :truncation
+  end
+
   describe '.factory' do
     it 'has a valid factory' do
       expect(FactoryBot.build(:menu, :with_categories)).to be_valid

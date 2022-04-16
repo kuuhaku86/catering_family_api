@@ -1,6 +1,14 @@
 require 'rails_helper'
 
 RSpec.describe Category, type: :model do
+  before :each do
+    DatabaseCleaner.clean_with :truncation
+  end
+
+  after :each do
+    DatabaseCleaner.clean_with :truncation
+  end
+
   describe '.factory' do
     it 'has a valid factory' do
       expect(FactoryBot.build(:category)).to be_valid

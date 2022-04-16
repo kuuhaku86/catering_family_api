@@ -13,5 +13,13 @@ RSpec.describe OrderMenu, type: :model do
         expect(FactoryBot.build(:order_menu)).to be_valid
       end
     end
+
+    context 'with invalid attributes' do
+      it 'invalid without quantity' do
+        order_menu = FactoryBot.build(:invalid_order_menu)
+        order_menu.valid?
+        expect(order_menu.errors[:quantity]).to include("can't be blank")
+      end
+    end
   end
 end

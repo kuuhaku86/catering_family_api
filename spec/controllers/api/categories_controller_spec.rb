@@ -175,6 +175,12 @@ RSpec.describe Api::CategoriesController do
       end
 
       it "does not save when param name not exist" do
+        put :update, params: {
+          id: @category.id
+        }
+
+        expect(response.body).to eq({ message: "Parameter missing" }.to_json)
+        expect(response.status).to eq 422
       end
 
       it "does not save duplicate categories" do

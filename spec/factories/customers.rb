@@ -1,10 +1,10 @@
 FactoryBot.define do
   factory :customer do
-    name { "Name" }
-    email { "abc@gmail.com" }
+    name { Faker::Name.name }
+    email { Faker::Internet.email }
 
     trait :with_orders do
-      orders { build_list :order, 3 }
+      orders { |customer| [customer.association(:order, :with_order_menus, :with_customer)] }
     end
   end
 

@@ -6,4 +6,12 @@ RSpec.describe OrderMenu, type: :model do
       expect(FactoryBot.build(:order_menu)).to be_valid
     end
   end
+
+  describe '.validations' do
+    context 'with valid attributes' do
+      it 'is valid with a quatity and a total_price' do
+        expect(FactoryBot.build(:order_menu)).to be_valid
+      end
+    end
+  end
 end

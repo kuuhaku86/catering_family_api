@@ -69,6 +69,17 @@ RSpec.describe Api::MenusController do
       end
 
       it "does not save duplicate name" do
+        create(:menu, name: "Nasi Kuning", categories:[@categories[0]])
+
+        initial_count = Menu.count
+
+        post :create, params: @params
+
+        final_count = Menu.count
+
+        expect(final_count - initial_count).to eq(0)
+        expect(response.body).to eq({ message: "Name has already been taken" }.to_json)
+        expect(response.status).to eq 422
       end
 
       it "does not save price < 0.01" do

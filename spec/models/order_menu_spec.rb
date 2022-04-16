@@ -20,6 +20,12 @@ RSpec.describe OrderMenu, type: :model do
         order_menu.valid?
         expect(order_menu.errors[:quantity]).to include("can't be blank")
       end
+
+      it 'invalid without total_price' do
+        order_menu = FactoryBot.build(:invalid_order_menu)
+        order_menu.valid?
+        expect(order_menu.errors[:total_price]).to include("can't be blank")
+      end
     end
   end
 end

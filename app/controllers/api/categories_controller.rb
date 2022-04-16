@@ -9,7 +9,7 @@ class Api::CategoriesController < ApplicationController
     begin
       @data = Category.find(params[:id])
 
-      render json: @data
+      render json: @data, status: :ok
     rescue
       render json: {
         message: "Category not found"
@@ -30,7 +30,7 @@ class Api::CategoriesController < ApplicationController
       )
 
       if @data.save
-        render json: @data
+        render json: @data, status: :created
       else
         raise @data.errors.full_messages.join(', ')
       end
@@ -52,11 +52,11 @@ class Api::CategoriesController < ApplicationController
       category.name = params[:name]
 
       if category.save
-        render json: @data, status: :success
+        render json: category, status: :ok
       else
         raise @data.errors.full_messages.join(', ')
       end
-    rescue ActiveRecord::RecordNotFound
+    rescue ActiveRecord::RecordNotFound => e
       render json: {
         message: e.message
       }, status: :not_found

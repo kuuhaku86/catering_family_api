@@ -11,8 +11,8 @@ RSpec.describe Api::CategoriesController do
 
   describe 'GET #index' do
     before :all do
-      @category1 = create(:category)
-      @category2 = create(:category)
+      @category1 = create(:category, name: "Category1")
+      @category2 = create(:category, name: "Category2")
       @categories = [@category1, @category2]
     end
 
@@ -37,7 +37,7 @@ RSpec.describe Api::CategoriesController do
 
   describe 'GET #show' do
     before :all do
-      @category = create(:category)
+      @category = create(:category, name: "Category3")
     end
 
     context "with valid id" do
@@ -135,7 +135,7 @@ RSpec.describe Api::CategoriesController do
 
   describe 'PUT #update' do
     before :all do
-      @category = create(:category)
+      @category = create(:category, name: "Category4")
       @params = { 
         id: @category.id,
         name: "Food"
@@ -155,6 +155,12 @@ RSpec.describe Api::CategoriesController do
       end
 
       it "return category object" do
+        put :update, params: @params
+
+        result = JSON.parse(response.body)
+
+        expect(result["name"]).to eq Category.last.name
+        expect(response.status).to eq 200
       end
     end
 

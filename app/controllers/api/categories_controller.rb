@@ -10,4 +10,22 @@ class Api::CategoriesController < ApplicationController
 
     render json: @data
   end
+
+  def create
+    begin
+      category = params[:category]
+
+      @data = Category.new(
+        name: category[:name],
+      )
+
+      if @data.save
+        render json: @data
+      else
+        raise @data.errors.full_messages.join(', ')
+      end
+    rescue => e
+      render json: e.message, status: :unprocessable_entity
+    end
+  end
 end

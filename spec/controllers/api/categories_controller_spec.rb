@@ -1,6 +1,10 @@
 require 'rails_helper'
 
 RSpec.describe Api::CategoriesController do
+  after :each do
+    DatabaseCleaner.clean
+  end
+
   describe 'GET #index' do
     before :all do
       @category1 = create(:category)
@@ -49,6 +53,41 @@ RSpec.describe Api::CategoriesController do
         get :index
 
         expect { JSON.parse(response.body) }.not_to raise_error
+      end
+    end
+  end
+
+  describe 'POST #create' do
+    context "with valid attributes" do
+      it "saves the new category in the database" do
+        params = { 
+          category: {
+            name: 'Beverages'
+          } 
+        }
+        initial_count = Category.count
+
+        post :create, params: params
+
+        final_count = Category.count
+
+
+        expect(final_count - initial_count).to eq(1)
+        expect(Category.last.name).to eq 'Beverages'
+      end
+
+      it "return category object" do
+      end
+    end
+
+    context "with invalid attributes" do
+      it "does not save the new category in the database" do
+      end
+
+      it "does not save duplicate categories" do
+      end
+
+      it "return error message" do
       end
     end
   end

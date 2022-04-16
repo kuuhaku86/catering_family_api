@@ -19,10 +19,13 @@ RSpec.describe Api::CategoriesController do
       it "response with json content type" do
         get :index, params: { id: @category1.id }
 
-        expect(response.content_type).to eq 'application/json'
+        expect(response.content_type).to include 'application/json'
       end
 
       it "response with valid json object" do
+        get :index, params: { id: @category1.id }
+
+        expect { JSON.parse(response.body) }.not_to raise_error
       end
     end
 

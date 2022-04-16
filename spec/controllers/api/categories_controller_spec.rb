@@ -16,47 +16,61 @@ RSpec.describe Api::CategoriesController do
       @categories = [@category1, @category2]
     end
 
-    context 'with params[:id]' do
-      subject { @category1 }
+    it "populates an array of all categories" do 
+      get :index
 
+      expect(response.body).to eq(@categories.to_json)
+    end
+
+    it "response with json content type" do
+      get :index
+
+      expect(response.content_type).to include 'application/json'
+    end
+
+    it "response with valid json object" do
+      get :index
+
+      expect { JSON.parse(response.body) }.not_to raise_error
+    end
+  end
+
+  describe 'GET #show' do
+    before :all do
+      @category = create(:category)
+    end
+
+    context "with valid id" do
       it "populates an category object" do
-        get :index, params: { id: @category1.id }
+        get :show, params: { id: @category.id }
 
-        expect(response.body).to eq @category1.to_json
+        expect(response.body).to eq @category.to_json
       end
 
       it "response with json content type" do
-        get :index, params: { id: @category1.id }
+        get :show, params: { id: @category.id }
 
         expect(response.content_type).to include 'application/json'
       end
 
       it "response with valid json object" do
-        get :index, params: { id: @category1.id }
+        get :show, params: { id: @category.id }
 
         expect { JSON.parse(response.body) }.not_to raise_error
       end
     end
 
-    context 'without params[:id]' do
-      subject { @categories }
+    context "with invalid id" do
+      it "return error message" do
+        post :show, params: { id: 99 }
 
-      it "populates an array of all categories" do 
-        get :index
-
-        expect(response.body).to eq(@categories.to_json)
+        expect(response.body).to eq({ message: "Category not found" }.to_json)
       end
 
-      it "response with json content type" do
-        get :index
+      it "return status 404" do
+        post :show, params: { id: 99 }
 
-        expect(response.content_type).to include 'application/json'
-      end
-
-      it "response with valid json object" do
-        get :index
-
-        expect { JSON.parse(response.body) }.not_to raise_error
+        expect(response.status).to eq 404
       end
     end
   end

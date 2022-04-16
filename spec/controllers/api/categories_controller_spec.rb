@@ -2,16 +2,24 @@ require 'rails_helper'
 
 RSpec.describe Api::CategoriesController do
   describe 'GET #index' do
+    before :all do
+      @category1 = create(:category)
+      @category1 = create(:category)
+    end
+
     context 'with params[:id]' do
+      subject { @category1 }
+
       it "populates an category object" do
-        category = create(:category)
+        get :index, params: { id: @category1.id }
 
-        get :index, params: { id: category.id }
-
-        expect(response.body).to eq category.to_json
+        expect(response.body).to eq @category1.to_json
       end
 
       it "response with json content type" do
+        get :index, params: { id: @category1.id }
+
+        expect(response.content_type).to eq 'application/json'
       end
 
       it "response with valid json object" do

@@ -46,12 +46,6 @@ RSpec.describe Order, type: :model do
         order.valid?
         expect(order.errors[:customer]).to include("can't be blank")
       end
-
-      it 'invalid without order_menus' do
-        order = FactoryBot.build(:invalid_order)
-        order.valid?
-        expect(order.errors[:order_menus]).to include("can't be blank")
-      end
     end
   end
 end

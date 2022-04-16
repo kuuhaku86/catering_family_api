@@ -4,6 +4,11 @@ RSpec.describe Api::CategoriesController do
   describe 'GET #index' do
     context 'with params[:id]' do
       it "populates an category object" do
+        category = create(:category)
+
+        get :index, params: { id: category.id }
+
+        expect(response.body).to eq category.to_json
       end
 
       it "response with json content type" do

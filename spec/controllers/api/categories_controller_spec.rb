@@ -184,6 +184,15 @@ RSpec.describe Api::CategoriesController do
       end
 
       it "does not save duplicate categories" do
+        create(:category, name: "Category6")
+
+        put :update, params: {
+          id: @category.id,
+          name: "Category6"
+        }
+
+        expect(response.body).to eq({ message: "Name has already been taken" }.to_json)
+        expect(response.status).to eq 422
       end
     end
   end

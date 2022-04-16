@@ -54,7 +54,7 @@ class Api::CategoriesController < ApplicationController
       if category.save
         render json: category, status: :ok
       else
-        raise @data.errors.full_messages.join(', ')
+        raise category.errors.full_messages.join(', ')
       end
     rescue ActiveRecord::RecordNotFound => e
       render json: {

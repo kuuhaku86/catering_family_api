@@ -40,6 +40,9 @@ RSpec.describe Api::CategoriesController do
       end
 
       it "response with json content type" do
+        get :index
+
+        expect(response.content_type).to include 'application/json'
       end
 
       it "response with valid json object" do

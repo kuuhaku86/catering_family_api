@@ -3,14 +3,14 @@ require 'rails_helper'
 RSpec.describe Customer, type: :model do
   describe '.factory' do
     it 'has a valid factory' do
-      expect(FactoryBot.build(:customer)).to be_valid
+      expect(FactoryBot.build(:customer, :with_orders)).to be_valid
     end
   end
 
   describe '.validations' do
     context 'with valid attributes' do
       it 'is valid with a name and a email' do
-        expect(FactoryBot.build(:customer)).to be_valid
+        expect(FactoryBot.build(:customer, :with_orders)).to be_valid
       end
     end
 
@@ -28,12 +28,20 @@ RSpec.describe Customer, type: :model do
       end
 
       it 'invalid with duplicate email' do
-        customer1 = FactoryBot.create(:customer, email: 'test@test.com')
+        customer1 = FactoryBot.create(:customer, :with_orders, email: 'test@test.com')
         customer2 = FactoryBot.build(:invalid_customer, email: 'test@test.com')
 
         customer2.valid?
 
         expect(customer2.errors[:email]).to include("has already been taken")
+      end
+    end
+  end
+
+  describe '.associations' do
+    context 'with valid attributes' do
+      it 'is valid with orders' do
+        expect(FactoryBot.build(:customer, :with_orders)).to be_valid
       end
     end
   end

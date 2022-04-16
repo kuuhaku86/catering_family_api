@@ -46,6 +46,9 @@ RSpec.describe Api::CategoriesController do
       end
 
       it "response with valid json object" do
+        get :index
+
+        expect { JSON.parse(response.body) }.not_to raise_error
       end
     end
   end

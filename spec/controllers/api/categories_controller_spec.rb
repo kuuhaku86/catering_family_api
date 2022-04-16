@@ -1,6 +1,10 @@
 require 'rails_helper'
 
 RSpec.describe Api::CategoriesController do
+  before :each do
+    DatabaseCleaner.start
+  end
+
   after :each do
     DatabaseCleaner.clean
   end
@@ -59,24 +63,29 @@ RSpec.describe Api::CategoriesController do
 
   describe 'POST #create' do
     context "with valid attributes" do
-      it "saves the new category in the database" do
-        params = { 
+      before :all do
+        @params = { 
           category: {
             name: 'Beverages'
           } 
         }
+      end
+
+      it "saves the new category in the database" do
         initial_count = Category.count
 
-        post :create, params: params
+        post :create, params: @params
 
         final_count = Category.count
-
 
         expect(final_count - initial_count).to eq(1)
         expect(Category.last.name).to eq 'Beverages'
       end
 
       it "return category object" do
+        post :create, params: @params
+
+        expect(response.body).to eq Category.last.to_json
       end
     end
 

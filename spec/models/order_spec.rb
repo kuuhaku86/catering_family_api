@@ -28,4 +28,12 @@ RSpec.describe Order, type: :model do
       end
     end
   end
+
+  describe '.associations' do
+    context 'with valid attributes' do
+      it 'is valid with customer' do
+        expect(FactoryBot.build(:order)).to be_valid
+      end
+    end
+  end
 end

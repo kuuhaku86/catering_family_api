@@ -99,6 +99,8 @@ RSpec.describe Api::CategoriesController do
         final_count = Category.count
 
         expect(final_count - initial_count).to eq(0)
+        expect(response.body).to eq({ message: "Parameter missing" }.to_json)
+        expect(response.status).to eq 422
       end
 
       it "does not save duplicate categories" do
@@ -111,9 +113,8 @@ RSpec.describe Api::CategoriesController do
         final_count = Category.count
 
         expect(final_count - initial_count).to eq(0)
-      end
-
-      it "return error message" do
+        expect(response.body).to eq({ message: "Name has already been taken" }.to_json)
+        expect(response.status).to eq 422
       end
     end
   end

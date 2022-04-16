@@ -83,6 +83,17 @@ RSpec.describe Api::MenusController do
       end
 
       it "does not save price < 0.01" do
+        params = @params.dup
+        params[:menu][:price] = 0.001
+        initial_count = Menu.count
+
+        post :create, params: params
+
+        final_count = Menu.count
+
+        expect(final_count - initial_count).to eq(0)
+        expect(response.body).to eq({ message: "Price must be greater than or equal to 0.01" }.to_json)
+        expect(response.status).to eq 422
       end
 
       it "does not save description exceed 150 characters" do

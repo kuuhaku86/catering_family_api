@@ -112,6 +112,17 @@ RSpec.describe Api::MenusController do
       end
 
       it "does not save if don't have any category" do
+        params = DeepClone.clone @params
+        params[:menu][:categories] = []
+        initial_count = Menu.count
+
+        post :create, params: params
+
+        final_count = Menu.count
+
+        expect(final_count - initial_count).to eq(0)
+        expect(response.body).to eq({ message: "Categories can't be blank" }.to_json)
+        expect(response.status).to eq 422
       end
     end
   end

@@ -9,10 +9,12 @@ class Api::MenusController < ApplicationController
         description: menu[:description],
       )
 
-      menu[:categories].each do |category_id|
-        category = Category.find(category_id)
+      if !menu[:categories].nil?
+        menu[:categories].each do |category_id|
+          category = Category.find(category_id)
 
-        @data.categories << category
+          @data.categories << category
+        end
       end
 
       if @data.save

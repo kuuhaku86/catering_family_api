@@ -20,6 +20,10 @@ class Api::MenusController < ApplicationController
       else
         raise @data.errors.full_messages.join(', ')
       end
+    rescue NoMethodError
+      render json: {
+        message: "Parameter missing"
+      }, status: :unprocessable_entity
     rescue => e
       render json: {
         message: e.message

@@ -10,27 +10,26 @@ RSpec.describe Api::MenusController do
   end
 
   describe 'POST #create' do
+    before :all do
+      @categories = [
+        create(:category, name: "CategoryMenu1"),
+        create(:category, name: "CategoryMenu2")
+      ]
+
+      @params = { 
+        menu: {
+          name: 'Nasi Kuning',
+          description: 'Nasi dengan warna kuning',
+          price: 10000,
+          categories: [
+            @categories[0].id,
+            @categories[1].id,
+          ]
+        } 
+      }
+    end
+
     context "with valid attributes" do
-      before :all do
-        @categories = [
-          create(:category, name: "CategoryMenu1"),
-          create(:category, name: "CategoryMenu2")
-        ]
-
-        @params = { 
-          menu: {
-            name: 'Nasi Kuning',
-            description: 'Nasi dengan warna kuning',
-            price: 10000,
-            categories: [
-              @categories[0].id,
-              @categories[1].id,
-            ]
-          } 
-        }
-      end
-
-
       it "saves the new menu in the database" do
         initial_count = Menu.count
 
@@ -58,6 +57,15 @@ RSpec.describe Api::MenusController do
 
     context "with invalid attributes" do
       it "does not save the invalid attributes menu to the database" do
+        initial_count = Menu.count
+
+        post :create, params: { menu: {} }
+
+        final_count = Menu.count
+
+        expect(final_count - initial_count).to eq(0)
+        expect(response.body).to eq({ message: "Parameter missing" }.to_json)
+        expect(response.status).to eq 422
       end
 
       it "does not save duplicate name" do

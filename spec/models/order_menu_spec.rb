@@ -28,4 +28,12 @@ RSpec.describe OrderMenu, type: :model do
       end
     end
   end
+
+  describe '.associations' do
+    context 'with valid attributes' do
+      it 'is valid with order' do
+        expect(FactoryBot.build(:order_menu)).to be_valid
+      end
+    end
+  end
 end

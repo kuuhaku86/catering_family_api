@@ -62,14 +62,15 @@ RSpec.describe Api::CategoriesController do
   end
 
   describe 'POST #create' do
+    before :all do
+      @params = { 
+        category: {
+          name: 'Beverages'
+        } 
+      }
+    end
+
     context "with valid attributes" do
-      before :all do
-        @params = { 
-          category: {
-            name: 'Beverages'
-          } 
-        }
-      end
 
       it "saves the new category in the database" do
         initial_count = Category.count
@@ -91,6 +92,13 @@ RSpec.describe Api::CategoriesController do
 
     context "with invalid attributes" do
       it "does not save the new category in the database" do
+        initial_count = Category.count
+
+        post :create, params: {}
+
+        final_count = Category.count
+
+        expect(final_count - initial_count).to eq(0)
       end
 
       it "does not save duplicate categories" do

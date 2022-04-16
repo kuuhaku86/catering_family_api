@@ -62,13 +62,13 @@ RSpec.describe Api::CategoriesController do
 
     context "with invalid id" do
       it "return error message" do
-        post :show, params: { id: 99 }
+        get :show, params: { id: 99 }
 
         expect(response.body).to eq({ message: "Category not found" }.to_json)
       end
 
       it "return status 404" do
-        post :show, params: { id: 99 }
+        get :show, params: { id: 99 }
 
         expect(response.status).to eq 404
       end
@@ -105,7 +105,7 @@ RSpec.describe Api::CategoriesController do
     end
 
     context "with invalid attributes" do
-      it "does not save the new category in the database" do
+      it "does not save the invalid attributes category to the database" do
         initial_count = Category.count
 
         post :create, params: {}
@@ -129,6 +129,40 @@ RSpec.describe Api::CategoriesController do
         expect(final_count - initial_count).to eq(0)
         expect(response.body).to eq({ message: "Name has already been taken" }.to_json)
         expect(response.status).to eq 422
+      end
+    end
+  end
+
+  describe 'PUT #update' do
+    before :all do
+      @category = create(:category)
+      @params = { 
+        id: @category.id,
+        name: "Food"
+      }
+    end
+
+    context "with valid attributes" do
+      it "update category in the database" do
+        initial_count = Category.count
+
+        put :update, params: @params
+
+        final_count = Category.count
+
+        expect(final_count - initial_count).to eq(0)
+        expect(Category.last.name).to eq 'Food'
+      end
+
+      it "return category object" do
+      end
+    end
+
+    context "with invalid attributes" do
+      it "does not save the invalid attributes category to the database" do
+      end
+
+      it "does not save duplicate categories" do
       end
     end
   end

@@ -40,4 +40,31 @@ class Api::CategoriesController < ApplicationController
       }, status: :unprocessable_entity
     end
   end
+
+  def update
+    begin
+      category = Category.find(params[:id])
+
+      if params[:name].nil?
+        raise "Parameter missing"
+      end
+
+      category.name = params[:name]
+
+      if category.save
+        render json: @data, status: :success
+      else
+        raise @data.errors.full_messages.join(', ')
+      end
+    rescue ActiveRecord::RecordNotFound
+      render json: {
+        message: e.message
+      }, status: :not_found
+    rescue => e
+      render json: {
+        message: e.message
+      }, status: :unprocessable_entity
+    end
+  end
+
 end

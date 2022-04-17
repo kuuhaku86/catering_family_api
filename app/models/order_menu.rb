@@ -5,7 +5,7 @@ class OrderMenu < ApplicationRecord
   belongs_to :menu, foreign_key: :menu_id
 
   validates :quantity, presence: true, numericality: { only_integer: true, greater_than: 0 }
-  validates :total_price, presence: true
+  validates :total_price, presence: true, numericality: { greater_than: 0 }
   validates :order, presence: true
   validates :menu, presence: true
 end

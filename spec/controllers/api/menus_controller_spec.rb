@@ -443,6 +443,10 @@ RSpec.describe Api::MenusController do
 
     context "with invalid attributes" do
       it "does not delete when menu not found" do
+        delete :destroy, params: { id: 999 }
+
+        expect(response.body).to eq ({ message: "Menu not found" }.to_json)
+        expect(response.status).to eq 404
       end
     end
   end

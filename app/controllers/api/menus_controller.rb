@@ -88,7 +88,7 @@ class Api::MenusController < ApplicationController
       end
 
       if menu.save
-        render json: menu, status: :ok
+        render json: { message: "Menu updated" }, status: :ok
       else
         raise menu.errors.full_messages.join(', ')
       end

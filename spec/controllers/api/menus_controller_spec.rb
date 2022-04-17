@@ -264,19 +264,13 @@ RSpec.describe Api::MenusController do
         expect(order_menu.total_price).to eq(3 * @menu.price)
       end
 
-      it "return menu object" do
+      it "return success message" do
         params = DeepClone.clone @params
         params[:id] = @menu.id
 
         put :update, params: params
 
-        menu_response = JSON.parse(response.body)
-        menu_from_db = Menu.last
-
-        expect(menu_response["name"]).to eq menu_from_db.name
-        expect(menu_response["price"]).to eq menu_from_db.price
-        expect(menu_response["description"]).to eq menu_from_db.description
-        expect(response.status).to eq 200
+        expect(response.body).to eq ({ message: "Menu updated" }.to_json)
       end
     end
 

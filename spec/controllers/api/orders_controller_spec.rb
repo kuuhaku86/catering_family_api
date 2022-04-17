@@ -220,6 +220,13 @@ RSpec.describe Api::OrdersController do
     end
 
     it "populates an array of all orders and total revenue with max date" do
+      get :index, params: { max_date: (Time.now - 1.day).strftime("%Y-%m-%d") }
+
+      result = JSON.parse(response.body)
+      expect(result["total_revenue"]).to eq(@orders[2].total_price + @orders[3].total_price)
+      expect(result["orders"][0]["id"]).to eq(@orders[2].id)
+      expect(result["orders"][1]["id"]).to eq(@orders[3].id)
+      expect(result["orders"].length).to eq(2)
     end
 
     it "populates an array of all orders and total revenue with min date" do

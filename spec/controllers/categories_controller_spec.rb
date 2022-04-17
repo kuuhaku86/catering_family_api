@@ -1,4 +1,4 @@
-RSpec.describe MenusController do
+RSpec.describe CategoriesController do
   describe 'GET #index' do
     it "renders the :index template" do
       get :index

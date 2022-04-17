@@ -10,7 +10,7 @@ class Api::MenusController < ApplicationController
 
     @data = @data.select { |menu| menu.soft_deleted == false }
 
-    render json: @data
+    render json: @data.to_json(include: [:categories])
   end
 
   def create

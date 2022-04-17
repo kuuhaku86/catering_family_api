@@ -365,7 +365,7 @@ RSpec.describe Api::MenusController do
     it "populates an array of all menus" do 
       get :index
 
-      expect(response.body).to eq(@menus.to_json)
+      expect(response.body).to eq(@menus.to_json(include: [:categories]))
     end
 
     it "populates an array of all menus that not soft deleted" do 
@@ -380,13 +380,13 @@ RSpec.describe Api::MenusController do
 
       get :index
 
-      expect(response.body).to eq(@menus.to_json)
+      expect(response.body).to eq(@menus.to_json(include: [:categories]))
     end
 
     it "populates menus that related with the category" do
       get :index, params: { category_id: @categories[1].id }
 
-      expect(response.body).to eq([@menus[0], @menus[2]].to_json)
+      expect(response.body).to eq([@menus[0], @menus[2]].to_json(include: [:categories]))
     end
 
     it "response with json content type" do

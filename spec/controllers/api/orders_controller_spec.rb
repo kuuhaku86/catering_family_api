@@ -72,6 +72,9 @@ RSpec.describe Api::OrdersController do
       end
 
       it "return category object" do
+        post :create, params: @params, as: :json
+
+        expect(response.body).to eq Order.last.to_json
       end
     end
 

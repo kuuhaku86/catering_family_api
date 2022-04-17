@@ -272,6 +272,7 @@ RSpec.describe Api::MenusController do
 
         menu_response = JSON.parse(response.body)
         menu_from_db = Menu.last
+
         expect(menu_response["name"]).to eq menu_from_db.name
         expect(menu_response["price"]).to eq menu_from_db.price
         expect(menu_response["description"]).to eq menu_from_db.description
@@ -281,6 +282,12 @@ RSpec.describe Api::MenusController do
 
     context "with invalid attributes" do
       it "does not save when id menu not found" do
+        params = DeepClone.clone @params
+        params[:id] = 999
+
+        put :update, params: params
+
+        expect(response.body).to eq ({ message: "Menu not found" }.to_json)
       end
 
       it "does not save the invalid attributes menu to the database" do

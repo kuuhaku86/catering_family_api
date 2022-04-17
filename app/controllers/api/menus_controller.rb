@@ -114,7 +114,7 @@ class Api::MenusController < ApplicationController
       menu.soft_deleted = true
 
       if menu.save
-        render json: { message: "Delete success" }, status: :ok
+        render json: { message: "Menu deleted" }, status: :ok
       else
         raise menu.errors.full_messages.join(', ')
       end

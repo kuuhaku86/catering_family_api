@@ -434,6 +434,10 @@ RSpec.describe Api::MenusController do
       end
 
       it "return success message" do
+        delete :destroy, params: { id: @menu.id }
+
+        expect(response.body).to eq ({ message: "Menu deleted" }.to_json)
+        expect(response.status).to eq 200
       end
     end
 

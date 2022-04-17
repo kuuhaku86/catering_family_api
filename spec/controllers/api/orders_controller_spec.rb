@@ -128,6 +128,14 @@ RSpec.describe Api::OrdersController do
       end
 
       it "update order status canceled in database" do
+        initial_count = Order.where(status: "canceled").count()
+
+        put :update, params: { id: @order.id, status: 'canceled' }, as: :json
+
+        final_count = Order.where(status: "canceled").count()
+
+        expect(final_count - initial_count).to eq 1
+        expect(response.body).to eq ({ message: "Order updated" }.to_json)
       end
     end
 

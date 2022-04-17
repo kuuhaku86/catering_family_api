@@ -226,7 +226,20 @@ RSpec.describe Api::MenusController do
         expect(menu.categories[1].id).to eq @menu.categories[1].id
       end
 
-      it "update the category only menu in the database" do
+      it "update the categories only menu in the database" do
+        params = {}
+        params[:id] = @menu.id
+        params[:categories] = @params[:categories]
+
+        put :update, params: params
+
+        menu = Menu.last
+
+        expect(menu.name).to eq @menu.name
+        expect(menu.description).to eq @menu.description
+        expect(menu.price).to eq @menu.price
+        expect(menu.categories[0].id).to eq @params[:categories][0]
+        expect(menu.categories[1].id).to eq @params[:categories][1]
       end
 
       it "update price not affect orders_menus" do

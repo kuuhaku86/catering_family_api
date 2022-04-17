@@ -374,6 +374,21 @@ RSpec.describe Api::MenusController do
       expect(response.body).to eq(@menus.to_json)
     end
 
+    it "populates an array of all menus that not soft deleted" do 
+      create(
+        :menu, 
+        name: "Nasi Ubi", 
+        price: 15000, 
+        description: "Nasi dari jagung",
+        categories: [@categories[1], @categories[2]],
+        soft_deleted: true
+      )
+
+      get :index
+
+      expect(response.body).to eq(@menus.to_json)
+    end
+
     it "populates menus that related with the category" do
       get :index, params: { category_id: @categories[1].id }
 

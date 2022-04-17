@@ -8,6 +8,8 @@ class Api::MenusController < ApplicationController
       @data = Menu.all
     end
 
+    @data = @data.select { |menu| menu.soft_deleted == false }
+
     render json: @data
   end
 

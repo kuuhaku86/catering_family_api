@@ -21,6 +21,12 @@ RSpec.describe OrderMenu, type: :model do
         expect(order_menu.errors[:quantity]).to include("can't be blank")
       end
 
+      it 'invalid when quantity less than 0' do
+        order_menu = FactoryBot.build(:invalid_order_menu, quantity: -1)
+        order_menu.valid?
+        expect(order_menu.errors[:quantity]).to include("must be greater than 0")
+      end
+
       it 'invalid without total_price' do
         order_menu = FactoryBot.build(:invalid_order_menu)
         order_menu.valid?

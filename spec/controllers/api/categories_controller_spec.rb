@@ -215,6 +215,9 @@ RSpec.describe Api::CategoriesController do
       end
 
       it "return success message" do
+        delete :destroy, params: @params
+
+        expect(response.body).to eq ({ message: "Category deleted" }.to_json)
       end
     end
 

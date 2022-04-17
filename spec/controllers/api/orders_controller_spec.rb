@@ -1,4 +1,5 @@
 require 'rails_helper'
+require 'deep_clone'
 
 RSpec.describe Api::OrdersController do
   before :each do
@@ -80,6 +81,17 @@ RSpec.describe Api::OrdersController do
 
     context "with invalid attributes" do
       it "does not save when menu id invalid" do
+        params = DeepClone.clone @params
+        params[:menus][0][:menu_id] = 999
+        initial_count = Order.count
+
+        post :create, params: params, as: :json
+
+        final_count = Order.count
+
+        expect(final_count - initial_count).to eq(0)
+        expect(response.body).to eq ({ message: "Menu not found" }.to_json)
+        expect(response.status).to eq 404
       end
 
       it "does not save when parameter missing" do

@@ -252,6 +252,21 @@ RSpec.describe Api::OrdersController do
       expect(result["orders"].length).to eq(1)
     end
 
+    it "populates an array of all orders and total revenue with mixed parameter" do
+      get :index, params: {
+        min_date: (Time.now - 4.day).strftime("%Y-%m-%d"),
+        max_date: (Time.now - 1.day).strftime("%Y-%m-%d"),
+        email: @orders[2].customer.email,
+        max_price: 30000,
+        min_price: 15000
+      }
+
+      result = JSON.parse(response.body)
+      expect(result["total_revenue"]).to eq(@orders[2].total_price)
+      expect(result["orders"][0]["id"]).to eq(@orders[2].id)
+      expect(result["orders"].length).to eq(1)
+    end
+
     it "response with json content type" do
       get :index
 

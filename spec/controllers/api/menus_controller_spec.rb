@@ -329,9 +329,64 @@ RSpec.describe Api::MenusController do
 
         expect(response.body).to eq ({ message: "Description is too long (maximum is 150 characters)" }.to_json)
       end
+    end
+  end
 
-      it "does not save if don't have any category" do
-      end
+  describe 'GET #index' do
+    before :all do
+      @categories = [
+        create(:category, name: "CategoryMenu6"),
+        create(:category, name: "CategoryMenu7"),
+        create(:category, name: "CategoryMenu8"),
+      ]
+
+      @menus = [
+        create(
+          :menu, 
+          name: "Nasi Bungkus", 
+          price: 10000, 
+          description: "Nasi yang dibungkus",
+          categories: [@categories[0], @categories[1]] 
+        ),
+        create(
+          :menu, 
+          name: "Nasi Tumpeng", 
+          price: 20000, 
+          description: "Nasi yang ditumpeng",
+          categories: [@categories[0], @categories[2]] 
+        ),
+        create(
+          :menu, 
+          name: "Nasi Jagung", 
+          price: 15000, 
+          description: "Nasi dari jagung",
+          categories: [@categories[1], @categories[2]] 
+        ),
+      ]
+    end
+
+    before :each do
+    end
+
+    it "populates an array of all menus" do 
+      get :index
+
+      expect(response.body).to eq(@menus.to_json)
+    end
+
+    it "populates menus that related with the category" do
+    end
+
+    it "response with json content type" do
+      get :index
+
+      expect(response.content_type).to include 'application/json'
+    end
+
+    it "response with valid json object" do
+      get :index
+
+      expect { JSON.parse(response.body) }.not_to raise_error
     end
   end
 end

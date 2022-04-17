@@ -1,4 +1,10 @@
 class Api::MenusController < ApplicationController
+  def index
+    @data = Menu.all
+
+    render json: @data
+  end
+
   def create
     begin
       menu = params[:menu]

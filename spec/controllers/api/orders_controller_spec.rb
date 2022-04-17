@@ -141,6 +141,17 @@ RSpec.describe Api::OrdersController do
 
     context "with invalid attributes" do
       it "does not update when order id invalid" do
+        initial_count = Order.where(status: "paid").count()
+
+        put :update, params: { id: 999, status: 'paid' }, as: :json
+
+        final_count = Order.where(status: "paid").count()
+
+        expect(final_count - initial_count).to eq 0
+        expect(response.body).to eq ({ message: "Order not found" }.to_json)
+      end
+
+      it "does not update when status invalid" do
       end
     end
   end

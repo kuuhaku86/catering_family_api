@@ -95,6 +95,17 @@ RSpec.describe Api::OrdersController do
       end
 
       it "does not save when parameter missing" do
+        params = DeepClone.clone @params
+        params[:menus] = nil
+        initial_count = Order.count
+
+        post :create, params: params, as: :json
+
+        final_count = Order.count
+
+        expect(final_count - initial_count).to eq(0)
+        expect(response.body).to eq ({ message: "Parameter missing" }.to_json)
+        expect(response.status).to eq 422
       end
     end
   end

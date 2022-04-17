@@ -223,6 +223,10 @@ RSpec.describe Api::CategoriesController do
 
     context "with invalid attributes" do
       it "does not save when id invalid" do
+        delete :destroy, params: { id: 9999 }
+
+        expect(response.body).to eq ({ message: "Category not found" }.to_json)
+        expect(response.status).to eq 404
       end
     end
   end

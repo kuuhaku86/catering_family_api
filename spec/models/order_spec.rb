@@ -21,6 +21,12 @@ RSpec.describe Order, type: :model do
         expect(order.errors[:total_price]).to include("can't be blank")
       end
 
+      it 'invalid when total_price less than 1' do
+        order = FactoryBot.build(:invalid_order, total_price: 0)
+        order.valid?
+        expect(order.errors[:total_price]).to include("must be greater than 0")
+      end
+
       it 'invalid without status' do
         order = FactoryBot.build(:invalid_order)
         order.valid?

@@ -1,6 +1,6 @@
 class Api::CategoriesController < ApplicationController
   def index
-    @data = Category.all
+    @data = Category.where(soft_deleted: false).all
 
     render json: @data
   end

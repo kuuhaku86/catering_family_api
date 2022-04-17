@@ -22,6 +22,14 @@ RSpec.describe Api::CategoriesController do
       expect(response.body).to eq(@categories.to_json)
     end
 
+    it "populates an array of undeleted categories" do 
+      create(:category, soft_deleted: true)
+
+      get :index
+
+      expect(response.body).to eq(@categories.to_json)
+    end
+
     it "response with json content type" do
       get :index
 

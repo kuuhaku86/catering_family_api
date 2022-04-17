@@ -3,6 +3,7 @@ Rails.application.routes.draw do
 
   # Defines the root path route ("/")
   # root "articles#index"
+  get '/menus/owner', to: 'menus#index_owner'
   resources :menus, only: [:index]
   resources :categories, only: [:index]
 

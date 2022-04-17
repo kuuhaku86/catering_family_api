@@ -32,6 +32,12 @@ RSpec.describe Order, type: :model do
         order.valid?
         expect(order.errors[:status]).to include("can't be blank")
       end
+
+      it 'invalid when status is not included in the list' do
+        order = FactoryBot.build(:invalid_order, status: "test")
+        order.valid?
+        expect(order.errors[:status]).to include("is not included in the list")
+      end
     end
   end
 

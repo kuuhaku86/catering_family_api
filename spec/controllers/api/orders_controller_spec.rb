@@ -109,4 +109,31 @@ RSpec.describe Api::OrdersController do
       end
     end
   end
+
+  describe 'PUT #update' do
+    before :each do
+      @order = create(:order, :with_order_menus, :with_customer)
+    end
+
+    context "with valid attributes" do
+      it "update order status paid in database" do
+        initial_count = Order.where(status: "paid").count()
+
+        put :update, params: { id: @order.id, status: 'paid' }, as: :json
+
+        final_count = Order.where(status: "paid").count()
+
+        expect(final_count - initial_count).to eq 1
+        expect(response.body).to eq ({ message: "Order updated" }.to_json)
+      end
+
+      it "update order status canceled in database" do
+      end
+    end
+
+    context "with invalid attributes" do
+      it "does not update when order id invalid" do
+      end
+    end
+  end
 end

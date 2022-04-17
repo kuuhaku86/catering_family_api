@@ -55,4 +55,28 @@ class Api::OrdersController < ApplicationController
       }, status: :unprocessable_entity
     end
   end
+
+  def update
+    begin
+      order = Order.find(params[:id])
+
+      order.update!(
+        status: params[:status]
+      )
+
+      render json: { message: "Order updated" }, status: :ok
+    rescue ActiveRecord::RecordNotFound => e
+      render json: {
+        message: "Order not found"
+      }, status: :not_found
+    rescue NoMethodError
+      render json: {
+        message: "Parameter missing"
+      }, status: :unprocessable_entity
+    rescue => e
+      render json: {
+        message: e.message
+      }, status: :unprocessable_entity
+    end
+  end
 end

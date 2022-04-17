@@ -190,6 +190,14 @@ RSpec.describe Api::OrdersController do
     end
 
     it "populates an array of all orders and total revenue with max price" do
+      get :index, params: { max_price: 28000 }
+
+      result = JSON.parse(response.body)
+      expect(result["total_revenue"]).to eq(@orders[0].total_price + @orders[1].total_price + @orders[2].total_price)
+      expect(result["orders"][0]["id"]).to eq(@orders[0].id)
+      expect(result["orders"][1]["id"]).to eq(@orders[1].id)
+      expect(result["orders"][2]["id"]).to eq(@orders[2].id)
+      expect(result["orders"].length).to eq(3)
     end
 
     it "populates an array of all orders and total revenue with min price" do

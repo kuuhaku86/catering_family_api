@@ -375,6 +375,9 @@ RSpec.describe Api::MenusController do
     end
 
     it "populates menus that related with the category" do
+      get :index, params: { category_id: @categories[1].id }
+
+      expect(response.body).to eq([@menus[0], @menus[2]].to_json)
     end
 
     it "response with json content type" do

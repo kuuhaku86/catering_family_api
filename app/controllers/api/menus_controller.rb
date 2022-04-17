@@ -1,6 +1,12 @@
 class Api::MenusController < ApplicationController
   def index
-    @data = Menu.all
+    @data = nil
+
+    if params[:category_id].present?
+      @data = Category.find(params[:category_id]).menus
+    else
+      @data = Menu.all
+    end
 
     render json: @data
   end

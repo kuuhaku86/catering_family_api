@@ -149,9 +149,14 @@ RSpec.describe Api::OrdersController do
 
         expect(final_count - initial_count).to eq 0
         expect(response.body).to eq ({ message: "Order not found" }.to_json)
+        expect(response.status).to eq 404
       end
 
       it "does not update when status invalid" do
+        put :update, params: { id: @order.id, status: 'test' }, as: :json
+
+        expect(response.body).to eq ({ message: "Validation failed: Status is not included in the list" }.to_json)
+        expect(response.status).to eq 422
       end
     end
   end

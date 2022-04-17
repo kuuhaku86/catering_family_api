@@ -311,6 +311,13 @@ RSpec.describe Api::MenusController do
       end
 
       it "does not save price < 0.01" do
+        params = DeepClone.clone @params
+        params[:id] = @menu.id
+        params[:price] = 0.001
+
+        put :update, params: params
+
+        expect(response.body).to eq ({ message: "Price must be greater than or equal to 0.01" }.to_json)
       end
 
       it "does not save description exceed 150 characters" do

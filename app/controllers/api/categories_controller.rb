@@ -67,4 +67,25 @@ class Api::CategoriesController < ApplicationController
     end
   end
 
+  def destroy
+    begin
+      category = Category.find(params[:id])
+
+      category.soft_deleted = true
+
+      if category.save
+        render json: { message: "Category deleted" }, status: :ok
+      else
+        raise category.errors.full_messages.join(', ')
+      end
+    rescue ActiveRecord::RecordNotFound => e
+      render json: {
+        message: "Category not found"
+      }, status: :not_found
+    rescue => e
+      render json: {
+        message: e.message
+      }, status: :unprocessable_entity
+    end
+  end
 end

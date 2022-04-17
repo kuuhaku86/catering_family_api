@@ -193,4 +193,34 @@ RSpec.describe Api::CategoriesController do
       end
     end
   end
+
+  describe 'DELETE #destroy' do
+    before :each do
+      @category = create(:category, name: "Category7")
+      @params = { 
+        id: @category.id,
+      }
+    end
+
+    context "with valid attributes" do
+      it "soft delete category in the database" do
+        initial_count = Category.where(soft_deleted: true).count
+
+        delete :destroy, params: @params
+
+        final_count = Category.where(soft_deleted: true).count
+
+        expect(final_count - initial_count).to eq(1)
+        expect(Category.last.soft_deleted).to eq true
+      end
+
+      it "return success message" do
+      end
+    end
+
+    context "with invalid attributes" do
+      it "does not save when id invalid" do
+      end
+    end
+  end
 end

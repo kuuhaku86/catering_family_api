@@ -52,7 +52,7 @@ class Api::CategoriesController < ApplicationController
       category.name = params[:name]
 
       if category.save
-        render json: category, status: :ok
+        render json: { message: "Category updated" }, status: :ok
       else
         raise category.errors.full_messages.join(', ')
       end

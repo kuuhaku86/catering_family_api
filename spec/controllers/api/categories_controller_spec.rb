@@ -154,13 +154,10 @@ RSpec.describe Api::CategoriesController do
         expect(Category.last.name).to eq 'Food'
       end
 
-      it "return category object" do
+      it "return success message" do
         put :update, params: @params
 
-        result = JSON.parse(response.body)
-
-        expect(result["name"]).to eq Category.last.name
-        expect(response.status).to eq 200
+        expect(response.body).to eq ({ message: "Category updated" }.to_json)
       end
     end
 

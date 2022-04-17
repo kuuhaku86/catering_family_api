@@ -407,4 +407,39 @@ RSpec.describe Api::MenusController do
       expect { JSON.parse(response.body) }.not_to raise_error
     end
   end
+
+  describe 'DELETE #destroy' do
+    before :all do
+      @categories = [
+        create(:category, name: "CategoryMenu9"),
+      ]
+
+      @menu = create(
+        :menu, 
+        name: "Nasi Tiwul", 
+        price: 15000, 
+        description: "Nasi dari tiwul",
+        categories: [@categories[0]]
+      )
+    end
+
+    context "with valid attributes" do
+      it "soft delete the menu in the database" do
+        status_before = @menu.soft_deleted
+
+        delete :destroy, params: { id: @menu.id }
+
+        expect(status_before).to eq false
+        expect(Menu.find_by(id: @menu.id).soft_deleted).to eq true
+      end
+
+      it "return success message" do
+      end
+    end
+
+    context "with invalid attributes" do
+      it "does not delete when menu not found" do
+      end
+    end
+  end
 end

@@ -106,4 +106,26 @@ class Api::MenusController < ApplicationController
       }, status: :unprocessable_entity
     end
   end
+
+  def destroy
+    begin
+      menu = Menu.find(params[:id])
+
+      menu.soft_deleted = true
+
+      if menu.save
+        render json: { message: "Delete success" }, status: :ok
+      else
+        raise menu.errors.full_messages.join(', ')
+      end
+    rescue ActiveRecord::RecordNotFound => e
+      render json: {
+        message: "Menu not found"
+      }, status: :not_found
+    rescue => e
+      render json: {
+        message: e.message
+      }, status: :unprocessable_entity
+    end
+  end
 end

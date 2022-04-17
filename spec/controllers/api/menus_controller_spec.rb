@@ -321,6 +321,13 @@ RSpec.describe Api::MenusController do
       end
 
       it "does not save description exceed 150 characters" do
+        params = DeepClone.clone @params
+        params[:id] = @menu.id
+        params[:description] = "a" * 151
+
+        put :update, params: params
+
+        expect(response.body).to eq ({ message: "Description is too long (maximum is 150 characters)" }.to_json)
       end
 
       it "does not save if don't have any category" do

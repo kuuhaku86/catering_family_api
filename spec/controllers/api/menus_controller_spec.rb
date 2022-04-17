@@ -243,6 +243,25 @@ RSpec.describe Api::MenusController do
       end
 
       it "update price not affect orders_menus" do
+        order = create(:order, :with_customer)
+        order_menu = create(
+          :order_menu, 
+          quantity: 3,
+          total_price: 3 * @menu.price,
+          menu: @menu,
+          order: order
+        )
+        params = {}
+        params[:id] = @menu.id
+        params[:price] = @params[:price]
+
+        put :update, params: params
+
+        menu = Menu.last
+        order_menu = OrderMenu.last
+
+        expect(menu.price).to eq @params[:price]
+        expect(order_menu.total_price).to eq(3 * @menu.price)
       end
 
       it "return menu object" do

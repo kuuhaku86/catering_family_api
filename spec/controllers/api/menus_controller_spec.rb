@@ -300,6 +300,14 @@ RSpec.describe Api::MenusController do
       end
 
       it "does not save duplicate name" do
+        create(:menu, name: @params[:name], categories:[@categories[0]])
+
+        params = DeepClone.clone @params
+        params[:id] = @menu.id
+
+        put :update, params: params
+
+        expect(response.body).to eq ({ message: "Name has already been taken" }.to_json)
       end
 
       it "does not save price < 0.01" do

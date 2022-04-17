@@ -182,6 +182,11 @@ RSpec.describe Api::OrdersController do
     end
 
     it "populates an array of all orders and total revenue with email" do 
+      get :index, params: { email: @orders[0].customer.email }
+
+      result = JSON.parse(response.body)
+      expect(result["total_revenue"]).to eq(@orders[0].total_price)
+      expect(result["orders"][0]["id"]).to eq(@orders[0].id)
     end
 
     it "populates an array of all orders and total revenue with max price" do

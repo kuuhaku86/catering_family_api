@@ -3,13 +3,14 @@ class Api::OrdersController < ApplicationController
     @data = nil
     optional_params = [:email, :max_price, :min_price, :max_date, :min_date]
     param_exist = false
-  
+
     optional_params.each do |param|
-      if !params[param].blank?
+      if !params[param].nil?
         param_exist = true
-        return
+        break
       end
     end
+
 
     if !param_exist
       @data = Order.where(

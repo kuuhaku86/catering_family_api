@@ -291,6 +291,12 @@ RSpec.describe Api::MenusController do
       end
 
       it "does not save the invalid attributes menu to the database" do
+        params = {}
+        params[:id] = @menu.id
+
+        put :update, params: params
+
+        expect(response.body).to eq ({ message: "Parameter missing" }.to_json)
       end
 
       it "does not save duplicate name" do

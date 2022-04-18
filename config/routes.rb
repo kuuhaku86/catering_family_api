@@ -6,6 +6,7 @@ Rails.application.routes.draw do
   get '/menus/owner', to: 'menus#index_owner'
   resources :menus, only: [:index]
   resources :categories, only: [:index]
+  get '/orders/revenue', to: 'orders#revenue'
   resources :orders, only: [:index]
 
   namespace :api do

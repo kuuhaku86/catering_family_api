@@ -29,7 +29,7 @@ class Api::OrdersController < ApplicationController
       ).all
 
       if !params[:email].blank?
-        @data = @data. select { |order| order.customer.email == params[:email] }
+        @data = @data. select { |order| order.customer.email.include? params[:email] }
       end
 
       if !params[:max_price].blank?
@@ -54,6 +54,8 @@ class Api::OrdersController < ApplicationController
     @data.each do |order|
       total_revenue += order.total_price
     end
+
+    @data = JSON.parse(@data.to_json(include: [{ order_menus: { include: :menu }}, :customer]))
 
     render json: {
       orders: @data,

@@ -291,7 +291,7 @@ RSpec.describe Api::OrdersController do
     it "populates an array of all orders" do 
       get :index
 
-      expect(response.body).to eq(Order.order(created_at: :desc).all.to_json)
+      expect(response.body).to eq(Order.order(created_at: :desc).all.to_json(include: [:order_menus, :customer]))
     end
 
     it "response with json content type" do

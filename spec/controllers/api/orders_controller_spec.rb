@@ -63,7 +63,7 @@ RSpec.describe Api::OrdersController do
         total_price = @params[:menus].inject(0) { |sum, menu| sum + menu[:quantity] * (@menus.find {|i| i.id == menu[:menu_id]}).price }
 
         expect(order.total_price).to eq total_price
-        expect(order.status).to eq 'new'
+        expect(order.status).to eq Order::STATUS[:new]
         expect(order.order_menus[0].quantity).to eq @params[:menus][0][:quantity]
         expect(order.order_menus[1].quantity).to eq @params[:menus][1][:quantity]
         expect(order.order_menus[0].total_price).to eq @params[:menus][0][:quantity] * @menus[0].price
@@ -117,22 +117,22 @@ RSpec.describe Api::OrdersController do
 
     context "with valid attributes" do
       it "update order status paid in database" do
-        initial_count = Order.where(status: "paid").count()
+        initial_count = Order.where(status: Order::STATUS[:paid]).count()
 
-        put :update, params: { id: @order.id, status: 'paid' }, as: :json
+        put :update, params: { id: @order.id, status: Order::STATUS[:paid] }, as: :json
 
-        final_count = Order.where(status: "paid").count()
+        final_count = Order.where(status: Order::STATUS[:paid]).count()
 
         expect(final_count - initial_count).to eq 1
         expect(response.body).to eq ({ message: "Order updated" }.to_json)
       end
 
       it "update order status canceled in database" do
-        initial_count = Order.where(status: "canceled").count()
+        initial_count = Order.where(status: Order::STATUS[:canceled]).count()
 
-        put :update, params: { id: @order.id, status: 'canceled' }, as: :json
+        put :update, params: { id: @order.id, status: Order::STATUS[:canceled] }, as: :json
 
-        final_count = Order.where(status: "canceled").count()
+        final_count = Order.where(status: Order::STATUS[:canceled]).count()
 
         expect(final_count - initial_count).to eq 1
         expect(response.body).to eq ({ message: "Order updated" }.to_json)
@@ -141,11 +141,11 @@ RSpec.describe Api::OrdersController do
 
     context "with invalid attributes" do
       it "does not update when order id invalid" do
-        initial_count = Order.where(status: "paid").count()
+        initial_count = Order.where(status: Order::STATUS[:paid]).count()
 
-        put :update, params: { id: 999, status: 'paid' }, as: :json
+        put :update, params: { id: 999, status: Order::STATUS[:paid] }, as: :json
 
-        final_count = Order.where(status: "paid").count()
+        final_count = Order.where(status: Order::STATUS[:paid]).count()
 
         expect(final_count - initial_count).to eq 0
         expect(response.body).to eq ({ message: "Order not found" }.to_json)
@@ -164,10 +164,10 @@ RSpec.describe Api::OrdersController do
   describe 'GET #index_revenue' do
     before :all do
       @orders = [
-        create(:order, :with_order_menus, :with_customer, total_price: 15000, status: 'paid'),
-        create(:order, :with_order_menus, :with_customer, total_price: 20000, status: 'paid'),
-        create(:order, :with_order_menus, :with_customer, total_price: 25000, status: 'paid', created_at: Time.now - 3.day),
-        create(:order, :with_order_menus, :with_customer, total_price: 30000, status: 'paid', created_at: Time.now - 5.day),
+        create(:order, :with_order_menus, :with_customer, total_price: 15000, status: Order::STATUS[:paid]),
+        create(:order, :with_order_menus, :with_customer, total_price: 20000, status: Order::STATUS[:paid]),
+        create(:order, :with_order_menus, :with_customer, total_price: 25000, status: Order::STATUS[:paid], created_at: Time.now - 3.day),
+        create(:order, :with_order_menus, :with_customer, total_price: 30000, status: Order::STATUS[:paid], created_at: Time.now - 5.day),
       ]
     end
 

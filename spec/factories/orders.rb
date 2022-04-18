@@ -1,7 +1,7 @@
 FactoryBot.define do
   factory :order do
     total_price { 1.5 }
-    status { "new" }
+    status { Order::STATUS[:new] }
 
     trait :with_customer do
       customer { create(:customer) }

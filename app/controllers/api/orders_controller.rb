@@ -14,12 +14,12 @@ class Api::OrdersController < ApplicationController
 
     if !param_exist
       @data = Order.where(
-        status: "paid",
+        status: Order::STATUS[:paid],
         created_at: Time.now.beginning_of_day..Time.now.end_of_day
       ).all
     else
       @data = Order.where(
-        status: "paid",
+        status: Order::STATUS[:paid],
       ).all
 
       if !params[:email].blank?

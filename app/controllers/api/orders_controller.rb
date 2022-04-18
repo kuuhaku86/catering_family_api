@@ -1,5 +1,5 @@
 class Api::OrdersController < ApplicationController
-  def index
+  def index_revenue
     @data = nil
     optional_params = [:email, :max_price, :min_price, :max_date, :min_date]
     param_exist = false

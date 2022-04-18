@@ -161,7 +161,7 @@ RSpec.describe Api::OrdersController do
     end
   end
 
-  describe 'GET #index' do
+  describe 'GET #index_revenue' do
     before :all do
       @orders = [
         create(:order, :with_order_menus, :with_customer, total_price: 15000, status: 'paid'),
@@ -172,7 +172,7 @@ RSpec.describe Api::OrdersController do
     end
 
     it "populates an array of all orders today and total revenue" do 
-      get :index
+      get :index_revenue
 
       result = JSON.parse(response.body)
       expect(result["total_revenue"]).to eq(@orders[0].total_price + @orders[1].total_price)
@@ -182,7 +182,7 @@ RSpec.describe Api::OrdersController do
     end
 
     it "populates an array of all orders and total revenue with email" do 
-      get :index, params: { email: @orders[0].customer.email }
+      get :index_revenue, params: { email: @orders[0].customer.email }
 
       result = JSON.parse(response.body)
       expect(result["total_revenue"]).to eq(@orders[0].total_price)
@@ -190,7 +190,7 @@ RSpec.describe Api::OrdersController do
     end
 
     it "populates an array of all orders and total revenue with max price" do
-      get :index, params: { max_price: 28000 }
+      get :index_revenue, params: { max_price: 28000 }
 
       result = JSON.parse(response.body)
       expect(result["total_revenue"]).to eq(@orders[0].total_price + @orders[1].total_price + @orders[2].total_price)
@@ -201,7 +201,7 @@ RSpec.describe Api::OrdersController do
     end
 
     it "populates an array of all orders and total revenue with min price" do
-      get :index, params: { min_price: 23000 }
+      get :index_revenue, params: { min_price: 23000 }
 
       result = JSON.parse(response.body)
       expect(result["total_revenue"]).to eq(@orders[2].total_price + @orders[3].total_price)
@@ -211,7 +211,7 @@ RSpec.describe Api::OrdersController do
     end
 
     it "populates an array of all orders and total revenue with range price" do
-      get :index, params: { min_price: 23000, max_price: 28000 }
+      get :index_revenue, params: { min_price: 23000, max_price: 28000 }
 
       result = JSON.parse(response.body)
       expect(result["total_revenue"]).to eq(@orders[2].total_price)
@@ -220,7 +220,7 @@ RSpec.describe Api::OrdersController do
     end
 
     it "populates an array of all orders and total revenue with max date" do
-      get :index, params: { max_date: (Time.now - 1.day).strftime("%Y-%m-%d") }
+      get :index_revenue, params: { max_date: (Time.now - 1.day).strftime("%Y-%m-%d") }
 
       result = JSON.parse(response.body)
       expect(result["total_revenue"]).to eq(@orders[2].total_price + @orders[3].total_price)
@@ -230,7 +230,7 @@ RSpec.describe Api::OrdersController do
     end
 
     it "populates an array of all orders and total revenue with min date" do
-      get :index, params: { min_date: (Time.now - 4.day).strftime("%Y-%m-%d") }
+      get :index_revenue, params: { min_date: (Time.now - 4.day).strftime("%Y-%m-%d") }
 
       result = JSON.parse(response.body)
       expect(result["total_revenue"]).to eq(@orders[0].total_price + @orders[1].total_price + @orders[2].total_price)
@@ -241,7 +241,7 @@ RSpec.describe Api::OrdersController do
     end
 
     it "populates an array of all orders and total revenue with range date" do
-      get :index, params: {
+      get :index_revenue, params: {
         min_date: (Time.now - 4.day).strftime("%Y-%m-%d"),
         max_date: (Time.now - 1.day).strftime("%Y-%m-%d") 
       }
@@ -253,7 +253,7 @@ RSpec.describe Api::OrdersController do
     end
 
     it "populates an array of all orders and total revenue with mixed parameter" do
-      get :index, params: {
+      get :index_revenue, params: {
         min_date: (Time.now - 4.day).strftime("%Y-%m-%d"),
         max_date: (Time.now - 1.day).strftime("%Y-%m-%d"),
         email: @orders[2].customer.email,
@@ -268,13 +268,13 @@ RSpec.describe Api::OrdersController do
     end
 
     it "response with json content type" do
-      get :index
+      get :index_revenue
 
       expect(response.content_type).to include 'application/json'
     end
 
     it "response with valid json object" do
-      get :index
+      get :index_revenue
 
       expect { JSON.parse(response.body) }.not_to raise_error
     end

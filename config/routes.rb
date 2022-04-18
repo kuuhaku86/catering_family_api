@@ -10,6 +10,7 @@ Rails.application.routes.draw do
   namespace :api do
     resources :categories
     resources :menus
+    get '/orders/revenue', to: 'orders#index_revenue'
     resources :orders
   end
 end

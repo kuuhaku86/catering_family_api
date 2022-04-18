@@ -2,7 +2,7 @@ class Api::OrdersController < ApplicationController
   def index
     @data = Order.order(created_at: :desc).all
 
-    render json: @data.to_json(include: [:order_menus, :customer])
+    render json: @data.to_json(include: [{ order_menus: { include: :menu }}, :customer])
   end
 
   def index_revenue

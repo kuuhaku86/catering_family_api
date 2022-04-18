@@ -52,8 +52,10 @@ RSpec.describe Api::OrdersController do
     context "with valid attributes" do
       it "insert new order to the database" do
         initial_count = Order.count
+        params = DeepClone.clone @params
+        params[:menus] = @params[:menus].to_json
 
-        post :create, params: @params, as: :json
+        post :create, params: params, as: :json
 
         final_count = Order.count
 
@@ -73,7 +75,10 @@ RSpec.describe Api::OrdersController do
       end
 
       it "return category object" do
-        post :create, params: @params, as: :json
+        params = DeepClone.clone @params
+        params[:menus] = @params[:menus].to_json
+
+        post :create, params: params, as: :json
 
         expect(response.body).to eq Order.last.to_json
       end
@@ -83,6 +88,7 @@ RSpec.describe Api::OrdersController do
       it "does not save when menu id invalid" do
         params = DeepClone.clone @params
         params[:menus][0][:menu_id] = 999
+        params[:menus] = params[:menus].to_json
         initial_count = Order.count
 
         post :create, params: params, as: :json

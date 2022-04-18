@@ -78,9 +78,15 @@ class Api::OrdersController < ApplicationController
 
       total_price = 0
 
-      params[:menus].each do |menu|
-        menus << Menu.find(menu[:menu_id])
-        total_price += menu[:quantity] * menus.last.price
+      if params[:menus].nil?
+        raise "Parameter missing"
+      end
+
+      param_menus = JSON.parse(params[:menus])
+
+      param_menus.each do |menu|
+        menus << Menu.find(menu["menu_id"].to_i)
+        total_price += menu["quantity"].to_i * menus.last.price.to_i
       end
 
       order = Order.create!(
@@ -89,8 +95,8 @@ class Api::OrdersController < ApplicationController
       )
 
       menus.each do |menu|
-        quantity = params[:menus].find { |m| m[:menu_id] == menu.id }[:quantity]
-        total_price_order_menu = params[:menus].find { |m| m[:menu_id] == menu.id }[:quantity] * menu.price
+        quantity = param_menus.find { |m| m["menu_id"] == menu.id }["quantity"]
+        total_price_order_menu = param_menus.find { |m| m["menu_id"] == menu.id }["quantity"] * menu.price
 
         OrderMenu.create!(
           order: order,

@@ -1,4 +1,10 @@
 class Api::OrdersController < ApplicationController
+  def index
+    @data = Order.order(created_at: :desc).all
+
+    render json: @data
+  end
+
   def index_revenue
     @data = nil
     optional_params = [:email, :max_price, :min_price, :max_date, :min_date]

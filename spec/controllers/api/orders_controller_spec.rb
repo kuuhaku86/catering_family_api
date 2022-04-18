@@ -279,4 +279,31 @@ RSpec.describe Api::OrdersController do
       expect { JSON.parse(response.body) }.not_to raise_error
     end
   end
+
+  describe 'GET #index' do
+    before :all do
+      create(:order, :with_order_menus, :with_customer, total_price: 25000, status: Order::STATUS[:paid], created_at: Time.now - 3.day)
+      create(:order, :with_order_menus, :with_customer, total_price: 15000, status: Order::STATUS[:paid], created_at: Time.now - 1.day)
+      create(:order, :with_order_menus, :with_customer, total_price: 20000, status: Order::STATUS[:paid])
+      create(:order, :with_order_menus, :with_customer, total_price: 30000, status: Order::STATUS[:paid], created_at: Time.now - 5.day)
+    end
+
+    it "populates an array of all orders" do 
+      get :index
+
+      expect(response.body).to eq(Order.order(created_at: :desc).all.to_json)
+    end
+
+    it "response with json content type" do
+      get :index
+
+      expect(response.content_type).to include 'application/json'
+    end
+
+    it "response with valid json object" do
+      get :index
+
+      expect { JSON.parse(response.body) }.not_to raise_error
+    end
+  end
 end

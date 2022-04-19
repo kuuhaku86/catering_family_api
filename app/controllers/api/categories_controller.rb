@@ -1,4 +1,6 @@
 class Api::CategoriesController < ApplicationController
+  skip_before_action :verify_authenticity_token
+
   def index
     @data = Category.where(soft_deleted: false).all
 

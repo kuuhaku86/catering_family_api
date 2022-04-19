@@ -1,4 +1,6 @@
 class Api::OrdersController < ApplicationController
+  skip_before_action :verify_authenticity_token
+
   def index
     @data = Order.order(created_at: :desc).all
 

@@ -1,12 +1,20 @@
 # Gigih Catering Family - Yohan Ardiansyah (KM_G2BE2114)
 
-## Database Design
+A project with Ruby on Rails framework and using REST API for its data communication. For the project detail itself, the project focused to solve Gigih Catering Family business problem to monitor their business. This project originally used for finishing final project from Generasi Gigih Yayasan Anak Bangsa Bisa. 
+
+## Visuals
+
+### Database Design
 
 ![img](app/assets/images/db.jpg)
 
-## API Documentation
+### REST API
 
+### UI API consumer
 
+## Installation
+
+## Usage
 
 ## Rails on Replit
 

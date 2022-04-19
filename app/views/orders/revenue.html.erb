@@ -34,6 +34,7 @@
         <th scope="col">Name</th>
         <th scope="col">Email</th>
         <th scope="col">Orders</th>
+        <th scope="col">Date</th>
         <th scope="col">Status</th>
         <th scope="col">Total</th>
       </tr>
@@ -116,6 +117,7 @@
           });
 
           row += `</td>
+            <td>${order.created_at}</td>
             <td>${order.status}</td>
             <td>${order.total_price}</td>
           </tr>`;
@@ -127,7 +129,7 @@
 
         let row = `<tr>
             <th></th>
-            <td colspan="4" style="text-align:center;"><b>Total</b></td>
+            <td colspan="5" style="text-align:center;"><b>Total</b></td>
             <td>${data.total_revenue}</td>
           </tr>`;
 

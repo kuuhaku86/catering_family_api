@@ -41,7 +41,7 @@ class Api::OrdersController < ApplicationController
       end
 
       if !params[:max_date].blank?
-        @data = @data. select { |order| order.created_at <= params[:max_date].to_datetime }
+        @data = @data. select { |order| order.created_at < params[:max_date].to_datetime + 1.day }
       end
 
       if !params[:min_date].blank?

@@ -13,6 +13,6 @@ class Order < ApplicationRecord
   validates :customer, presence: true
 
   def self.cancel_new_orders
-    where(status: 'NEW').update_all(status: 'CANCELED')
+    where(status: STATUS[:new]).update_all(status: STATUS[:canceled])
   end
 end

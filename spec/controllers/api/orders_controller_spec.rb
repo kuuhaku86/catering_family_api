@@ -18,7 +18,7 @@ RSpec.describe Api::OrdersController do
         create(
           :menu, 
           name: "Nasi Pecel", 
-          price: 10000, 
+          price: 10000.5, 
           description: "Nasi dengan pecel",
           categories: [category] 
         ),
@@ -62,7 +62,7 @@ RSpec.describe Api::OrdersController do
         expect(final_count - initial_count).to eq(1)
 
         order = Order.last
-        total_price = @params[:menus].inject(0) { |sum, menu| sum + menu[:quantity] * (@menus.find {|i| i.id == menu[:menu_id]}).price }
+        total_price = @params[:menus].inject(0) { |sum, menu| sum + menu[:quantity].to_f * (@menus.find {|i| i.id == menu[:menu_id]}).price.to_f }
 
         expect(order.total_price).to eq total_price
         expect(order.status).to eq Order::STATUS[:new]

@@ -88,7 +88,7 @@ class Api::OrdersController < ApplicationController
 
       param_menus.each do |menu|
         menus << Menu.find(menu["menu_id"].to_i)
-        total_price += menu["quantity"].to_i * menus.last.price.to_i
+        total_price += menu["quantity"].to_f * menus.last.price.to_f
       end
 
       order = Order.create!(
@@ -98,7 +98,7 @@ class Api::OrdersController < ApplicationController
 
       menus.each do |menu|
         quantity = param_menus.find { |m| m["menu_id"] == menu.id }["quantity"]
-        total_price_order_menu = param_menus.find { |m| m["menu_id"] == menu.id }["quantity"] * menu.price
+        total_price_order_menu = param_menus.find { |m| m["menu_id"] == menu.id }["quantity"].to_f * menu.price.to_f
 
         OrderMenu.create!(
           order: order,

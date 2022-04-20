@@ -37,29 +37,473 @@ A project with Ruby on Rails framework and using REST API for its data communica
 ### JSON Object
 For the API, we will use some Object that can be a JSON response for the REST API.
 
-| Name | JSON Object |
-|------|-------------|
-|**Category Object** | <code>{<br/>&ensp;id(integer),<br/>&ensp;name(string),<br/>&ensp;created_at(string),<br/>&ensp;updated_at(string),<br/>&ensp;soft_deleted(boolean)<br/>}</code><br/><br/>Example:<br/><code>{<br/>&ensp;id: 1,<br/>&ensp;name:"Beverages",<br/>&ensp;created_at:"2022-04-19T02:52:49.072Z",<br/>&ensp;updated_at:"2022-04-19T02:52:49.072Z",<br/>&ensp;soft_deleted:false<br/>}</code>|
-|**Menu Object**     | <code>{<br/>&ensp;id(integer),<br/>&ensp;name(string),<br/>&ensp;price(float),<br/>&ensp;description(string),<br/>&ensp;created_at(string),<br/>&ensp;updated_at(string),<br/>&ensp;soft_deleted(boolean)<br/>}</code><br/><br/>Example:<br/><code>{<br/>&ensp;id: 1,<br/>&ensp;name:"Nasi Uduk",<br/>&ensp;price:1200.5,<br/>&ensp;description:"Nasi yang sangat enak",<br/>&ensp;created_at:"2022-04-19T02:52:49.072Z",<br/>&ensp;updated_at:"2022-04-19T02:52:49.072Z",<br/>&ensp;soft_deleted:false<br/>}</code>|
-|**Customer Object**     | <code>{<br/>&ensp;id(integer),<br/>&ensp;name(string),<br/>&ensp;email(string),<br/>&ensp;created_at(string),<br/>&ensp;updated_at(string)<br/>}</code><br/><br/>Example:<br/><code>{<br/>&ensp;id: 1,<br/>&ensp;name:"Bob",<br/>&ensp;email:"bob@mail.com",<br/>&ensp;created_at:"2023-04-19T02:52:49.072Z",<br/>&ensp;updated_at:"2022-04-19T02:52:49.072Z"<br/>}</code>|
-|**Order Object**     | <code>{<br/>&ensp;id(integer),<br/>&ensp;total_price(float),<br/>&ensp;status(string),<br/>&ensp;created_at(string),<br/>&ensp;updated_at(string),<br/>&ensp;order_menus(array of OrderMenu Object),<br/>&ensp;customer(Customer Object)<br/>}</code><br/><br/>Example:<br/><code>{<br/>&ensp;id: 1,<br/>&ensp;total_price:35000.75,<br/>&ensp;status:"NEW",<br/>&ensp;created_at:"2023-04-19T02:52:49.072Z",<br/>&ensp;updated_at:"2022-04-19T02:52:49.072Z",<br/>&ensp;order_menus:[OrderMenu Object],<br/>&ensp;customer:Customer Object<br/>}</code>|
-|**OrderMenu Object**     | <code>{<br/>&ensp;id(integer),<br/>&ensp;quantity(integer),<br/>&ensp;total_price(float),<br/>&ensp;created_at(string),<br/>&ensp;updated_at(string),<br/>&ensp;menu(Menu Object),<br/>&ensp;order(Order Object)<br/>}</code><br/><br/>Example:<br/><code>{<br/>&ensp;id: 1,<br/>&ensp;quantity:5,<br/>&ensp;total_price:2000.75,<br/>&ensp;created_at:"2023-04-19T02:52:49.072Z",<br/>&ensp;updated_at:"2022-04-19T02:52:49.072Z",<br/>&ensp;menus:Menu Object,<br/>&ensp;order:Order Object<br/>}</code>|
 
+<table>
+  <thead>
+    <tr>
+      <th>
+        Name
+      </th>
+      <th>
+        JSON Object
+      </th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>
+        <strong>Category Object</strong>
+      </td>
+      <td>
+        <pre>
+  {
+    id(integer),
+    name(string),
+    created_at(string),
+    updated_at(string),
+    soft_deleted(boolean)
+  }
+        </pre>
+        Example:
+        <pre>
+  {
+    "id": 1,
+    "name": "Beverages",
+    "created_at": "2022-04-19T02:52:49.072Z",
+    "updated_at": "2022-04-19T02:52:49.072Z",
+    "soft_deleted": false
+  }
+        </pre>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <strong>Menu Object</strong>
+      </td>
+      <td>
+        <pre>
+  {
+    id(integer),
+    name(string),
+    price(float),
+    description(string),
+    created_at(string),
+    updated_at(string),
+    soft_deleted(boolean)
+  }
+        </pre>
+        Example:
+        <pre>
+  {
+    "id": 1,
+    "name": "Nasi Uduk",
+    "price": 1200.5,
+    "description": "Nasi yang sangat enak",
+    "created_at": "2022-04-19T02:52:49.072Z",
+    "updated_at": "2022-04-19T02:52:49.072Z",
+    "soft_deleted": false
+  }
+        </pre>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <strong>
+          Customer Object         
+        </strong>
+      </td>
+      <td>
+        <pre>
+{
+  id(integer),
+  name(string),
+  email(string),
+  created_at(string),
+  updated_at(string)
+}
+        </pre>
+        Example:
+        <pre>
+{
+  "id": 1,
+  "name": "Bob",
+  "email": "bob@mail.com",
+  "created_at": "2023-04-19T02:52:49.072Z",
+  "updated_at": "2022-04-19T02:52:49.072Z"
+}
+        </pre>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <strong>
+          Order Object
+        </strong>
+      </td>
+      <td>
+        <pre>
+{
+  id(integer),
+  total_price(float),
+  status(string),
+  created_at(string),
+  updated_at(string),
+  order_menus(array of OrderMenu Object),
+  customer(Customer Object)
+}
+        </pre>
+        Example:
+        <pre>
+{
+  "id": 1,
+  "total_price": 35000.75,
+  "status": "NEW",
+  "created_at": "2023-04-19T02:52:49.072Z",
+  "updated_at": "2022-04-19T02:52:49.072Z",
+  "order_menus": [OrderMenu Object],
+  "customer": Customer Object
+}
+        </pre>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <strong>
+          OrderMenu Object
+        </strong>
+      </td>
+      <td>
+        <pre>
+{
+  id(integer),
+  quantity(integer),
+  total_price(float),
+  created_at(string),
+  updated_at(string),
+  menu(Menu Object),
+  order(Order Object)
+}
+        </pre>
+        Example:
+        <pre>
+{
+  "id": 1,
+  "quantity": 5,
+  "total_price": 2000.75,
+  "created_at":a "2023-04-19T02:52:49.072Z",
+  "updated_at": "2022-04-19T02:52:49.072Z",
+  "menu": Menu Object,
+  "order": Order Object
+}
+        </pre>
+      </td>
+    </tr>
+  </tbody>
+</table>
 
 ### User Story & API Contract
 
-|#| Usage | Detail |
-|-|-|---|
-|Extra from Myself (Responses)   |Response from API| If I'm not specify the response in the next API contract, then the response will almost the same as this.<br/><br/>Response:<br/><code>{<br/>&ensp;message(string)<br/>}</code><br/>Example:<br/><code>{<br/>&ensp;message: "Category updated"<br/>}</code><br/><br/>The error response's format will be the same too, although the status code of the response will be different|
-|Extra from Myself (Categories)  |Create, Read, Edit, and Delete Categories|Because the menu item needs category, I will tell the categories usage first.<br/><br/>**`POST /api/categories` &ensp;: Create a category**<br/>Payload:<br/><code>{<br/>&ensp;category:<br/>&ensp;{<br/>&ensp;&ensp;name(string)<br/>&ensp;}<br/>}</code><br/>Example:<br/><code>{<br/>&ensp;category:<br/>&ensp;{<br/>&ensp;&ensp;name: "Beverages"<br/>&ensp;}<br/>}</code><br/><br/>Response:<br/>`Category Object`<br/><br/>**`PUT /api/categories`&ensp;: Edit a category**<br/>Payload:<code><br/>{<br/>&ensp;name(string)<br/>}</code><br/>Example:<br/><code>{<br/>&ensp;name: "Beverages"<br/>}</code><br/><br/>**`GET /api/categories`&ensp;: Get array of categories**<br/>Response:<br/>`Array of Category Object`<br/><br/>**`DELETE /api/categories/:category_id`&ensp;: Soft delete a category**<br/><br/>You can consume these APIs with UI at URI `/categories` from the browser|
-|1  |As an owner, <br/>I want to create a new menu item,<br/>So that I can show them to my customers later.| **`POST /api/menus` &ensp;: Create a menu**<br/>Payload:<br/><code>{<br/>&ensp;menu:<br/>&ensp;{<br/>&ensp;&ensp;name(string),<br/>&ensp;&ensp;description(string),<br/>&ensp;&ensp;price(float),<br/>&ensp;&ensp;categories(Array of Category Id),<br/>&ensp;}<br/>}</code><br/>Example:<br/><code>{<br/>&ensp;menu:<br/>&ensp;{<br/>&ensp;&ensp;name: "Nasi Uduk",<br/>&ensp;&ensp;description: "Nasi yang mantab",<br/>&ensp;&ensp;price: 10000.5,<br/>&ensp;&ensp;categories: [1, 2],<br/>&ensp;}<br/>}</code><br/><br/>Response:<br/>`Menu Object`<br/><br/>You can consume this API with UI at URI `/menus/owner` from the browser|
-|2  |As an owner,<br />I want to update an existing menu item<br /> So that I can modify info related to the menu item | **`PUT /api/menus` &ensp;: Edit a menu**<br/>Payload:<br/><code>{<br/>&ensp;name(string),<br/>&ensp;description(string),<br/>&ensp;price(float),<br/>&ensp;categories(Array of Category Id),<br/>}</code><br/>Example:<br/><code>{<br/>&ensp;name: "Nasi Kucing",<br/>&ensp;description: "Nasi seukuran kucing",<br/>&ensp;price: 10000.5,<br/>&ensp;categories: [2, 4],<br/>}</code><br/><br/>You can consume this API with UI at URI `/menus/owner` from the browser|
-|3  |  As an owner,<br /> I want to show the list of all menu items<br /> So that my customers can see the list of all menu items that I sell |**`GET /api/menus`&ensp;: Get array of menus for Customer**<br/>Response:<br/>`Array of Menu Object`<br/><br/>Query that can be used:<br/>- `category_id(int)`: To get the menu according to its category<br/><br/>You can consume this API with UI at URI `/menus` from the browser|
-|4  |As an owner,<br /> I want to delete an existing menu item<br /> So that I can remove a menu item that is no longer provided by my catering service|**`DELETE /api/menus/:menu_id`&ensp;: Soft delete a menu**<br/><br/>You can consume this API with UI at URI `/menus/owner` from the browser|
-|5  |As an owner, <br/>I want to add customer’s order<br/> So that I can prepare their order|**`POST /api/orders` &ensp;: Create a order**<br/>Payload:<br/><code>{<br/>&ensp;customer:<br/>&ensp;{<br/>&ensp;&ensp;name(string),<br/>&ensp;&ensp;email(string)<br/>&ensp;},<br/>&ensp;menu_ids(Array of Menu Id),<br/>&ensp;menu_quantities(Array of Quantity for each menu (Ordered by the menu Id)),<br/>}</code><br/>Example:<br/><code>{<br/>&ensp;customer:<br/>&ensp;{<br/>&ensp;&ensp;name: "Bob",<br/>&ensp;&ensp;email: "bob@gmail.com"<br/>&ensp;},<br/>&ensp;menu_ids: [1, 2],<br/>&ensp;menu_quantities: [2, 3],<br/>}</code><br/><br/>You can consume this API with UI at URI `/orders` from the browser|
-|6  |As an owner,<br /> I want to update a customer’s order<br /> So that I can modify info related to the order<br />|**`PUT /api/orders/:order_id` &ensp;: Edit a order**<br/>Payload:<br/><code>{<br/>&ensp;status(string between("NEW", "PAID", "CANCELED"))<br/>}</code><br/>Example:<br/><code>{<br/>&ensp;status: "NEW"<br/>}</code><br/><br/>You can consume this API with UI at URI `/orders` from the browser<br/><br/>For the status update automation from "NEW" INTO "CANCELED" at 5 P.M should be already run with command `bundle exec whenever --update-crontab --set environment=development`|
-|7  | As an owner,<br /> I want to see a daily report of orders,<br /> So that I can see the revenue that I have generated for that day|**`GET /api/orders/revenue`&ensp;: Get array of orders that get revenue**<br/>Response:<br/>`Array of Order Object`<br/><br/>Query that can be used:<br/>- `email(string)`: Email of the customer<br/>- `max_price(float)`: Maximum total price of an order<br/>- `min_price(float)`: Minimum total price of an order<br/>- `max_date(date with format yyyy-mm-dd)`: Maximum range of date<br/>- `min_date(date with format yyyy-mm-dd)`: Minimum range of date<br/><br/>You can consume this API with UI at URI `/orders/revenue` from the browser|
-|Extra from Myself (GET all order)  | Get all order at the system|**`GET /api/orders`&ensp;: Get array of orders**<br/>Response:<br/>`Array of Order Object`<br/><br/>You can consume this API with UI at URI `/orders` from the browser|
+<table>
+  <thead>
+    <td>
+      #  
+    </td>
+    <td>
+      Usage
+    </td>
+    <td>
+      Detail
+    </td>
+  </thead>
+  <tbody>
+    <tr>
+      <td>
+        Extra from Myself (Responses)      
+      </td>
+      <td>
+        Response from API
+      </td>
+      <td>
+        If I'm not specify the response in the next API contract, then the response will almost the same as this.<br/><br/>
+        Response:
+        <pre>
+{
+  message(string)
+}
+        </pre>
+        Example:
+        <pre>
+{
+  "message": "Category updated"
+}
+        </pre>
+        The error response's format will be the same too, although the status code of the response will be different
+      </td>
+    </tr>
+    <tr>
+      <td>
+        Extra from Myself (Categories)      
+      </td>
+      <td>
+        Create, Read, Edit, and Delete Categories
+      </td>
+      <td>
+        Because the menu item needs category, I will tell the categories usage first.<br/><br/>
+        <strong>
+          <code>POST /api/categories</code>&ensp;: Create a category
+        </strong><br/>
+        Payload:<br/>
+        <pre>
+{
+  category:
+  {
+    name(string)
+  }
+}
+        </pre>
+        Example:<br/>
+        <pre>
+{
+  "category":
+  {
+    "name": "Beverages"
+  }
+}
+        </pre>
+        Response:<br/>
+        <code>Category Object</code><br/><br/>
+        <strong>
+          <code>PUT /api/categories</code>&ensp;: Edit a category
+        </strong><br/>
+        Payload:
+        <pre>
+{
+  name(string)
+}
+        </pre>
+        Example:
+        <pre>
+{
+  "name": "Beverages"
+}
+        </pre>
+        <strong>
+          <code>GET /api/categories&ensp;</code>: Get array of categories
+        </strong><br/>
+        Response:<br/>
+        <code>Array of Category Object</code><br/><br/>
+        <strong>
+          <code>DELETE /api/categories/:category_id</code>&ensp;: Soft delete a category
+        </strong><br/><br/>
+        You can consume these APIs with UI at URI <code>/categories</code> from the browser
+      </td>
+    </tr>
+    <tr>
+      <td>
+        1      
+      </td>
+      <td>
+        As an owner, <br/>I want to create a new menu item,<br/>So that I can show them to my customers later.
+      </td>
+      <td>
+        <strong>
+          <code>POST /api/menus</code> &ensp;: Create a menu
+        </strong><br/>
+        Payload:<br/>
+        <pre>
+{
+  menu:
+  {
+    name(string),
+    description(string),
+    price(float),
+    categories(Array of Category Id),
+  }
+}
+        </pre>
+        Example:<br/>
+        <pre>
+{
+  "menu": 
+  {
+    "name": "Nasi Uduk",
+    "description": "Nasi yang mantab",
+    "price": 10000.5,
+    "categories": [1, 2],
+  }
+}
+        </pre>
+        Response:<br/>
+        <code>Menu Object</code><br/><br/>
+        You can consume this API with UI at URI <code>/menus/owner</code> from the browser
+      </td>
+    </tr>
+    <tr>
+      <td>
+        2
+      </td>
+      <td>
+        As an owner,<br />I want to update an existing menu item<br /> So that I can modify info related to the menu item
+      </td>
+      <td>
+        <strong>
+          <code>PUT /api/menus</code> &ensp;: Edit a menu
+        </strong><br/>
+        Payload:<br/>
+        <pre>
+{
+  name(string),
+  description(string),
+  price(float),
+  categories(Array of Category Id),
+}
+        </pre>
+        Example:<br/><pre>
+{
+  "name": "Nasi Kucing",
+  "description": "Nasi seukuran kucing",
+  "price": 10000.5,
+  "categories": [2, 4],
+}
+        </pre>
+        You can consume this API with UI at URI <code>/menus/owner</code> from the browser
+      </td>
+    </tr>
+    <tr>
+      <td>
+        3
+      </td>
+      <td>
+        As an owner,<br /> I want to show the list of all menu items<br /> So that my customers can see the list of all menu items that I sell
+      </td>
+      <td>
+        <strong>
+          <code>GET /api/menus</code>&ensp;: Get array of menus for Customer
+        </strong><br/>
+        Response:<br/>
+        <code>Array of Menu Object</code><br/><br/>
+        Query that can be used:<br/>
+        - <code>category_id(int)</code>: To get the menu according to its category<br/><br/>
+        You can consume this API with UI at URI <code>/menus</code> from the browser
+      </td>
+    </tr>
+    <tr>
+      <td>
+        4
+      </td>
+      <td>
+        As an owner,<br /> I want to delete an existing menu item<br /> So that I can remove a menu item that is no longer provided by my catering service
+      </td>
+      <td>
+        <strong>
+          <code>DELETE /api/menus/:menu_id</code>&ensp;: Soft delete a menu
+        </strong><br/><br/>
+        You can consume this API with UI at URI <code>/menus/owner</code> from the browser
+      </td>
+    </tr>
+    <tr>
+      <td>
+        5
+      </td>
+      <td>
+        As an owner, <br/>I want to add customer’s order<br/> So that I can prepare their order
+      </td>
+      <td>
+        <strong>
+          <code>POST /api/orders</code> &ensp;: Create a order
+        </strong><br/>
+        Payload:<br/>
+        <pre>
+{
+  customer:
+  {
+    name(string),
+    email(string)
+  },
+  menu_ids(Array of Menu Id),
+  menu_quantities(Array of Quantity for each menu (Ordered by the menu Id)),
+}
+        </pre>
+        Example:<br/>
+        <pre>
+{
+  "customer":
+  {
+    "name": "Bob",
+    "email": "bob@gmail.com"
+  },
+  "menu_ids": [1, 2],
+  "menu_quantities": [2, 3],
+}
+        </pre>
+        You can consume this API with UI at URI <code>/orders</code> from the browser
+      </td>
+    </tr>
+    <tr>
+      <td>
+        6
+      </td>
+      <td>
+        As an owner,<br /> I want to update a customer’s order<br /> So that I can modify info related to the order<br />  
+      </td>
+      <td>
+        <strong>
+          <code>PUT /api/orders/:order_id</code> &ensp;: Edit a order
+        </strong><br/>
+        Payload:<br/>
+        <pre>
+{
+  status(string between("NEW", "PAID", "CANCELED"))
+}
+        </pre>
+        Example:<br/>
+        <pre>
+{
+  "status": "NEW"
+}
+        </pre>
+        You can consume this API with UI at URI <code>/orders</code> from the browser<br/><br/>
+        For the status update automation from "NEW" INTO "CANCELED" at 5 P.M should be already run with command <code>bundle exec whenever --update-crontab --set environment=development</code>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        7
+      </td>
+      <td>
+        As an owner,<br /> I want to see a daily report of orders,<br /> So that I can see the revenue that I have generated for that day
+      </td>
+      <td>
+        <strong>
+          <code>GET /api/orders/revenue</code>&ensp;: Get array of orders that get revenue
+        </strong><br/>
+        Response:<br/><code>Array of Order Object</code><br/><br/>
+        Query that can be used:<br/>
+        - <code>email(string)</code>: Email of the customer<br/>
+        - <code>max_price(float)</code>: Maximum total price of an order<br/>
+        - <code>min_price(float)</code>: Minimum total price of an order<br/>
+        - <code>max_date(date with format yyyy-mm-dd)</code>: Maximum range of date<br/>
+        - <code>min_date(date with format yyyy-mm-dd)</code>: Minimum range of date<br/><br/>
+        You can consume this API with UI at URI <code>/orders/revenue</code> from the browser
+      </td>
+    </tr>
+    <tr>
+      <td>
+        Extra from Myself (GET all order)
+      </td>
+      <td>
+        Get all order at the system
+      </td>
+      <td>
+        <strong>
+          <code>GET /api/orders</code>&ensp;: Get array of orders
+        </strong><br/>
+        Response:<br/><code>Array of Order Object</code><br/><br/>
+        You can consume this API with UI at URI <code>/orders</code> from the browser
+      </td>
+    </tr>
+  </tbody>
+</table>
 
 ## Rails on Replit
 

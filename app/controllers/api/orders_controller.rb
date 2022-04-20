@@ -87,7 +87,7 @@ class Api::OrdersController < ApplicationController
       end
 
       (0..params[:menu_ids].length - 1).each do |i|
-        menus << Menu.find(params[:menu_ids][i].to_i)
+        menus << Menu.find_by!(id: params[:menu_ids][i].to_i, soft_deleted: false)
         total_price += params[:menu_quantities][i].to_f * menus.last.price.to_f
       end
 

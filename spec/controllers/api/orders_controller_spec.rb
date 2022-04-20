@@ -32,16 +32,8 @@ RSpec.describe Api::OrdersController do
       ]
 
       @params = { 
-        menus: [
-          {
-            menu_id: @menus[0].id,
-            quantity: 2
-          },
-          {
-            menu_id: @menus[1].id,
-            quantity: 1
-          },
-        ],
+        menu_ids: [@menus[0].id, @menus[1].id],
+        menu_quantities: [1, 2],
         customer: {
           name: "John Doe",
           email: "john@gmail.com",
@@ -52,33 +44,31 @@ RSpec.describe Api::OrdersController do
     context "with valid attributes" do
       it "insert new order to the database" do
         initial_count = Order.count
-        params = DeepClone.clone @params
-        params[:menus] = @params[:menus].to_json
 
-        post :create, params: params, as: :json
+        post :create, params: @params, as: :json
 
         final_count = Order.count
 
         expect(final_count - initial_count).to eq(1)
 
         order = Order.last
-        total_price = @params[:menus].inject(0) { |sum, menu| sum + menu[:quantity].to_f * (@menus.find {|i| i.id == menu[:menu_id]}).price.to_f }
+        total_price = 0
+        (0..@params[:menu_ids].length - 1).each do |i|
+          total_price += @params[:menu_quantities][i].to_f * @menus[i].price.to_f
+        end
 
         expect(order.total_price).to eq total_price
         expect(order.status).to eq Order::STATUS[:new]
-        expect(order.order_menus[0].quantity).to eq @params[:menus][0][:quantity]
-        expect(order.order_menus[1].quantity).to eq @params[:menus][1][:quantity]
-        expect(order.order_menus[0].total_price).to eq @params[:menus][0][:quantity] * @menus[0].price
-        expect(order.order_menus[1].total_price).to eq @params[:menus][1][:quantity] * @menus[1].price
+        expect(order.order_menus[0].quantity).to eq @params[:menu_quantities][0]
+        expect(order.order_menus[1].quantity).to eq @params[:menu_quantities][1]
+        expect(order.order_menus[0].total_price).to eq @params[:menu_quantities][0] * @menus[0].price
+        expect(order.order_menus[1].total_price).to eq @params[:menu_quantities][1] * @menus[1].price
         expect(order.customer.name).to eq @params[:customer][:name]
         expect(order.customer.email).to eq @params[:customer][:email]
       end
 
-      it "return category object" do
-        params = DeepClone.clone @params
-        params[:menus] = @params[:menus].to_json
-
-        post :create, params: params, as: :json
+      it "return order object" do
+        post :create, params: @params, as: :json
 
         expect(response.body).to eq Order.last.to_json
       end
@@ -87,8 +77,7 @@ RSpec.describe Api::OrdersController do
     context "with invalid attributes" do
       it "does not save when menu id invalid" do
         params = DeepClone.clone @params
-        params[:menus][0][:menu_id] = 999
-        params[:menus] = params[:menus].to_json
+        params[:menu_ids][0] = 999
         initial_count = Order.count
 
         post :create, params: params, as: :json
@@ -102,7 +91,8 @@ RSpec.describe Api::OrdersController do
 
       it "does not save when parameter missing" do
         params = DeepClone.clone @params
-        params[:menus] = nil
+        params[:menu_ids] = nil
+        params[:menu_quantities] = nil
         initial_count = Order.count
 
         post :create, params: params, as: :json

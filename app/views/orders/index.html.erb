@@ -204,16 +204,15 @@
     let url = '/api/orders/';
     let name = $('#create-modal input[name="name"]').val();
     let email = $('#create-modal input[name="email"]').val();
-    let menus = [];
+    let menu_ids = [];
+    let menu_quantities = [];
 
     $('#create-modal input[name="menus[]"]:checkbox:checked').each(function() {
       let quantity = $("#quantity-" + $(this).val()).val();
 
       if (quantity > 0) {
-        menus.push({
-          menu_id: parseInt($(this).val()),
-          quantity: parseInt(quantity)
-        });
+        menu_ids.push($(this).val());
+        menu_quantities.push(quantity);
       }
     });
 
@@ -230,7 +229,8 @@
         name: name,
         email: email
       },
-      menus: menus
+      menu_ids: menu_ids,
+      menu_quantities: menu_quantities
     };
 
     console.log(payload);

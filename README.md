@@ -10,11 +10,52 @@ A project with Ruby on Rails framework and using REST API for its data communica
 
 ### REST API
 
+![api](app/assets/images/api.png)
+
 ### UI API consumer
+
+![ui-consumer](app/assets/images/ui-consumer.png)
 
 ## Installation
 
+### Requirement
+
+- Ruby 3.0.3
+- Gem
+- Bundler
+
+### Installation Process
+
+- Go to the Project's directory
+- Run command `bundle install` to install the dependencies
+- Run command `rails db:migrate` to setup the database
+- Run command `bundle exec whenever --update-crontab --set environment=development` to setup the task scheduler
+- Run command `rails server` to start the server
+
 ## Usage
+
+For the API, we will use some Object that can be a JSON response for the REST API.
+
+| Name | JSON Object |
+|------|-------------|
+|**Category Object** | <code>{<br/>&ensp;id(integer),<br/>&ensp;name(string),<br/>&ensp;created_at(string),<br/>&ensp;updated_at(string),<br/>&ensp;soft_deleted(boolean)<br/>}</code><br/><br/>Example:<br/><code>{<br/>&ensp;id: 1,<br/>&ensp;name:"Beverages",<br/>&ensp;created_at:"2022-04-19T02:52:49.072Z",<br/>&ensp;updated_at:"2022-04-19T02:52:49.072Z",<br/>&ensp;soft_deleted:false<br/>}</code>|
+|**Menu Object**     | <code>{<br/>&ensp;id(integer),<br/>&ensp;name(string),<br/>&ensp;price(float),<br/>&ensp;description(string),<br/>&ensp;created_at(string),<br/>&ensp;updated_at(string),<br/>&ensp;soft_deleted(boolean)<br/>}</code><br/><br/>Example:<br/><code>{<br/>&ensp;id: 1,<br/>&ensp;name:"Nasi Uduk",<br/>&ensp;price:1200.5,<br/>&ensp;description:"Nasi yang sangat enak",<br/>&ensp;created_at:"2022-04-19T02:52:49.072Z",<br/>&ensp;updated_at:"2022-04-19T02:52:49.072Z",<br/>&ensp;soft_deleted:false<br/>}</code>|
+|**Customer Object**     | <code>{<br/>&ensp;id(integer),<br/>&ensp;name(string),<br/>&ensp;email(string),<br/>&ensp;created_at(string),<br/>&ensp;updated_at(string)<br/>}</code><br/><br/>Example:<br/><code>{<br/>&ensp;id: 1,<br/>&ensp;name:"Bob",<br/>&ensp;email:"bob@mail.com",<br/>&ensp;created_at:"2023-04-19T02:52:49.072Z",<br/>&ensp;updated_at:"2022-04-19T02:52:49.072Z"<br/>}</code>|
+|**Order Object**     | <code>{<br/>&ensp;id(integer),<br/>&ensp;total_price(float),<br/>&ensp;status(string),<br/>&ensp;created_at(string),<br/>&ensp;updated_at(string),<br/>&ensp;order_menus(array of OrderMenu Object),<br/>&ensp;customer(Customer Object)<br/>}</code><br/><br/>Example:<br/><code>{<br/>&ensp;id: 1,<br/>&ensp;total_price:35000.75,<br/>&ensp;status:"NEW",<br/>&ensp;created_at:"2023-04-19T02:52:49.072Z",<br/>&ensp;updated_at:"2022-04-19T02:52:49.072Z",<br/>&ensp;order_menus:[OrderMenu Object],<br/>&ensp;customer:Customer Object<br/>}</code>|
+|**OrderMenu Object**     | <code>{<br/>&ensp;id(integer),<br/>&ensp;quantity(integer),<br/>&ensp;total_price(float),<br/>&ensp;created_at(string),<br/>&ensp;updated_at(string),<br/>&ensp;menu(Menu Object),<br/>&ensp;order(Order Object)<br/>}</code><br/><br/>Example:<br/><code>{<br/>&ensp;id: 1,<br/>&ensp;quantity:5,<br/>&ensp;total_price:2000.75,<br/>&ensp;created_at:"2023-04-19T02:52:49.072Z",<br/>&ensp;updated_at:"2022-04-19T02:52:49.072Z",<br/>&ensp;menus:Menu Object,<br/>&ensp;order:Order Object<br/>}</code>|
+
+
+|#| Usage | Detail |
+|-|-|---|
+|Extra from Myself (Responses)   |Response from API| If I'm not specify the response in the next API contract, then the response will almost the same as this.<br/>Response:<br/><code>{<br/>&ensp;message(string)<br/>}</code><br/>Example:<br/><code>{<br/>&ensp;message:"Category updated"<br/>}</code><br/>The error response's format will be the same too, although the status code of the response will be different|
+|Extra from Myself (Categories)  |Create, Read, Edit, and Delete Categories|Because the menu item needs category, I will tell the categories usage first.<br/><br/>**`POST /categories` &ensp;: Create a category**<br/>Payload:<br/><code>{<br/>&ensp;category:<br/>&ensp;{<br/>&ensp;&ensp;name(string)<br/>&ensp;}<br/>}</code><br/>Example:<br/><code>{<br/>&ensp;category:<br/>&ensp;{<br/>&ensp;&ensp;name: "Beverages"<br/>&ensp;}<br/>}</code><br/><br/>Response:<br/>`Category Object`<br/><br/>**`PUT /categories`&ensp;: Edit a category**<br/>Payload:<code><br/>{<br/>&ensp;name(string)<br/>}</code><br/>Example:<br/><code>{<br/>&ensp;name: "Beverages"<br/>}</code><br/><br/>**`GET /categories`&ensp;: Get array of undeleted category**<br/>Response:<br/>`Array of Category Object`<br/><br/>**`DELETE /categories/:category_id`&ensp;: Soft delete a category**<br/><br/>You can consume these APIs with UI at URI `/categories` from the browser|
+|1  |As an owner, <br/>I want to create a new menu item,<br/>So that I can show them to my customers later.| **`POST /menus` &ensp;: Create a menu**<br/>Payload:<br/><code>{<br/>&ensp;menu:<br/>&ensp;{<br/>&ensp;&ensp;name(string),<br/>&ensp;&ensp;description(string),<br/>&ensp;&ensp;price(float),<br/>&ensp;&ensp;categories(Array of Category Id),<br/>&ensp;}<br/>}</code><br/>Example:<br/><code>{<br/>&ensp;menu:<br/>&ensp;{<br/>&ensp;&ensp;name: "Nasi Uduk",<br/>&ensp;&ensp;description: "Nasi yang mantab",<br/>&ensp;&ensp;price: 10000.5,<br/>&ensp;&ensp;categories: [1, 2],<br/>&ensp;}<br/>}</code><br/><br/>Response:<br/>`Menu Object`<br/><br/>You can consume this API with UI at URI `/menus/owner` from the browser|
+|2  |As an owner,<br />I want to update an existing menu item<br /> So that I can modify info related to the menu item | **`PUT /menus` &ensp;: Edit a menu**<br/>Payload:<br/><code>{<br/>&ensp;name(string),<br/>&ensp;description(string),<br/>&ensp;price(float),<br/>&ensp;categories(Array of Category Id),<br/>}</code><br/>Example:<br/><code>{<br/>&ensp;name: "Nasi Kucing",<br/>&ensp;description: "Nasi seukuran kucing",<br/>&ensp;price: 10000.5,<br/>&ensp;categories: [2, 4],<br/>}</code><br/><br/>You can consume this API with UI at URI `/menus/owner` from the browser|
+|3  |  As an owner,<br /> I want to show the list of all menu items<br /> So that my customers can see the list of all menu items that I sell |**`GET /menus`&ensp;: Get array of undeleted menu**<br/>Response:<br/>`Array of Menu Object`<br/><br/>Query that can be used:<br/>- `category_id(int)`: To get the menu according to its category<br/><br/>You can consume this API with UI at URI `/menus` from the browser|
+|4  |As an owner,<br /> I want to delete an existing menu item<br /> So that I can remove a menu item that is no longer provided by my catering service|**`DELETE /menus/:menu_id`&ensp;: Soft delete a menu**<br/><br/>You can consume this API with UI at URI `/menus/owner` from the browser|
+|5  |As an owner, <br/>I want to add customer’s order<br/> So that I can prepare their order||
+|6  |As an owner,<br /> I want to update a customer’s order<br /> So that I can modify info related to the order<br />||
+|7  | As an owner,<br /> I want to see a daily report of orders,<br /> So that I can see the revenue that I have generated for that day||
 
 ## Rails on Replit
 

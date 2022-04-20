@@ -273,7 +273,7 @@ For the API, we will use some Object that can be a JSON response for the REST AP
         Response:<br/>
         <code>Category Object</code><br/><br/>
         <strong>
-          <code>PUT /api/categories</code>&ensp;: Edit a category
+          <code>PUT /api/categories/:category_id</code>&ensp;: Edit a category
         </strong><br/>
         Payload:
         <pre>
@@ -347,7 +347,7 @@ For the API, we will use some Object that can be a JSON response for the REST AP
       </td>
       <td>
         <strong>
-          <code>PUT /api/menus</code> &ensp;: Edit a menu
+          <code>PUT /api/menus/:menu_id</code> &ensp;: Edit a menu
         </strong><br/>
         Payload:<br/>
         <pre>
@@ -363,7 +363,7 @@ For the API, we will use some Object that can be a JSON response for the REST AP
   "name": "Nasi Kucing",
   "description": "Nasi seukuran kucing",
   "price": 10000.5,
-  "categories": [2, 4],
+  "categories": [2, 4]
 }
         </pre>
         You can consume this API with UI at URI <code>/menus/owner</code> from the browser
@@ -433,7 +433,7 @@ For the API, we will use some Object that can be a JSON response for the REST AP
     "email": "bob@gmail.com"
   },
   "menu_ids": [1, 2],
-  "menu_quantities": [2, 3],
+  "menu_quantities": [2, 3]
 }
         </pre>
         You can consume this API with UI at URI <code>/orders</code> from the browser

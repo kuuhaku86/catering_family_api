@@ -23,20 +23,11 @@ class Api::OrdersController < ApplicationController
 
   def create
     ActiveRecord::Base.transaction do
+      check_params(params)
+
       customer = get_customer(params)
-
-      menus = []
-
-      total_price = 0
-
-      if params[:menu_ids].nil? || params[:menu_quantities].nil? || params[:menu_ids].length != params[:menu_quantities].length
-        raise "Parameter missing"
-      end
-
-      (0..params[:menu_ids].length - 1).each do |i|
-        menus << Menu.find_by!(id: params[:menu_ids][i].to_i, soft_deleted: false)
-        total_price += params[:menu_quantities][i].to_f * menus.last.price.to_f
-      end
+      menus = get_menus(params)
+      total_price = get_total_price(params, menus)
 
       order = Order.create!(
         total_price: total_price,
@@ -44,8 +35,9 @@ class Api::OrdersController < ApplicationController
       )
 
       menus.each do |menu|
-        quantity = params[:menu_quantities][menus.index(menu)].to_i
-        total_price_order_menu = quantity.to_f * menu.price.to_f
+        index = menus.index(menu)
+        quantity = get_quantity(params, index)
+        total_price_order_menu = get_total_price_order_menu(params, menu, index)
 
         OrderMenu.create!(
           order: order,
@@ -62,7 +54,7 @@ class Api::OrdersController < ApplicationController
       render json: {
         message: "Menu not found"
       }, status: :not_found
-    rescue NoMethodError
+    rescue NoMethodError => e
       render json: {
         message: "Parameter missing"
       }, status: :unprocessable_entity
@@ -98,7 +90,6 @@ class Api::OrdersController < ApplicationController
   end
 
   private
-
   def get_order_revenue(params)
     @optional_params = [:email, :max_price, :min_price, :max_date, :min_date]
     query_exist = check_if_query_exist(params)
@@ -176,6 +167,17 @@ class Api::OrdersController < ApplicationController
     )
   end
 
+  def check_params(params)
+    if params[:menu_ids].nil? || 
+      params[:menu_quantities].nil? || 
+      params[:customer].nil? ||
+      params[:customer][:name].nil? ||
+      params[:customer][:email].nil? ||
+      params[:menu_ids].length != params[:menu_quantities].length
+      raise "Parameter missing"
+    end
+  end
+
   def get_customer(params)
     if !Customer.exists?(email: params[:customer][:email])
       return Customer.create!(
@@ -185,5 +187,34 @@ class Api::OrdersController < ApplicationController
     else
       return Customer.where(email: params[:customer][:email]).first
     end
+  end
+
+  def get_menus(params)
+    menus = []
+
+    (0..params[:menu_ids].length - 1).each do |i|
+      menus << Menu.find_by!(id: params[:menu_ids][i].to_i, soft_deleted: false)
+    end
+
+    return menus
+  end
+
+  def get_total_price(params, menus)
+    total_price = 0
+
+    (0..params[:menu_quantities].length - 1).each do |i|
+      total_price += params[:menu_quantities][i].to_f * menus[i].price.to_f
+    end
+
+    return total_price
+  end
+
+  def get_quantity(params, index)
+    return params[:menu_quantities][index].to_i
+  end
+
+  def get_total_price_order_menu(params, menu, index)
+    quantity = params[:menu_quantities][index].to_i
+    return quantity.to_f * menu.price.to_f
   end
 end

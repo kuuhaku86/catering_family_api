@@ -292,6 +292,7 @@ For the API, we will use some Object that can be a JSON response for the REST AP
         </strong><br/>
         Response:<br/>
         <code>Array of Category Object</code><br/><br/>
+        Assumptions: Because if we delete the category data directly, it can be affect the menu data directly so I use a soft delete technique to approach this<br/><br/>
         <strong>
           <code>DELETE /api/categories/:category_id</code>&ensp;: Soft delete a category
         </strong><br/><br/>
@@ -395,6 +396,7 @@ For the API, we will use some Object that can be a JSON response for the REST AP
         As an owner,<br /> I want to delete an existing menu item<br /> So that I can remove a menu item that is no longer provided by my catering service
       </td>
       <td>
+        Assumptions: Because if we delete the menu data directly, it can be affect the order data directly and make the algorithm to delete more complex, so I use a soft delete technique to approach this<br/><br/>
         <strong>
           <code>DELETE /api/menus/:menu_id</code>&ensp;: Soft delete a menu
         </strong><br/><br/>
@@ -447,6 +449,7 @@ For the API, we will use some Object that can be a JSON response for the REST AP
         As an owner,<br /> I want to update a customer’s order<br /> So that I can modify info related to the order<br />  
       </td>
       <td>
+        Assumptions: From the user story description for this point, I assume that the owner just need to update the order status and can't edit the other attributes.<br/><br/>
         <strong>
           <code>PUT /api/orders/:order_id</code> &ensp;: Edit a order
         </strong><br/>

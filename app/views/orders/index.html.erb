@@ -9,7 +9,6 @@
     <thead class="thead-dark">
       <tr>
         <th scope="col">#</th>
-        <th scope="col">Name</th>
         <th scope="col">Email</th>
         <th scope="col">Orders</th>
         <th scope="col">Date</th>
@@ -45,8 +44,6 @@
       </div>
       <div class="modal-body">
         <div class="form-group">
-          <label for="name" class="col-form-label">Customer Name:</label>
-          <input type="text" class="form-control" name="name" id="name">
           <label for="email" class="col-form-label">Customer Email:</label>
           <input type="email" class="form-control" name="email" id="email">
           <div class="p-3">
@@ -159,7 +156,6 @@
         data.forEach(order => {
           let row = `<tr>
             <th scope="row">${counter}</th>
-            <td>${order.customer.name}</td>
             <td>${order.customer.email}</td>
             <td>
           `;
@@ -202,7 +198,6 @@
 
   $('#create-modal').on('click', '.btn-primary', function() {
     let url = '/api/orders/';
-    let name = $('#create-modal input[name="name"]').val();
     let email = $('#create-modal input[name="email"]').val();
     let menu_ids = [];
     let menu_quantities = [];
@@ -226,7 +221,6 @@
 
     let payload = {
       customer: {
-        name: name,
         email: email
       },
       menu_ids: menu_ids,

@@ -90,6 +90,7 @@ class Api::OrdersController < ApplicationController
   end
 
   private
+
   def get_order_revenue(params)
     @optional_params = [:email, :max_price, :min_price, :max_date, :min_date]
     query_exist = check_if_query_exist(params)
@@ -171,7 +172,6 @@ class Api::OrdersController < ApplicationController
     if params[:menu_ids].nil? || 
       params[:menu_quantities].nil? || 
       params[:customer].nil? ||
-      params[:customer][:name].nil? ||
       params[:customer][:email].nil? ||
       params[:menu_ids].length != params[:menu_quantities].length
       raise "Parameter missing"
@@ -181,7 +181,6 @@ class Api::OrdersController < ApplicationController
   def get_customer(params)
     if !Customer.exists?(email: params[:customer][:email])
       return Customer.create!(
-        name: params[:customer][:name],
         email: params[:customer][:email],
       )
     else

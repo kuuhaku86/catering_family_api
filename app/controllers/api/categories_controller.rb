@@ -88,6 +88,7 @@ class Api::CategoriesController < ApplicationController
   end
   
   private
+
   def check_params(params)
     if params.nil? || params[:name].nil?
       raise "Parameter missing"

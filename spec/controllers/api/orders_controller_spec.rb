@@ -35,7 +35,6 @@ RSpec.describe Api::OrdersController do
         menu_ids: [@menus[0].id, @menus[1].id],
         menu_quantities: [1, 2],
         customer: {
-          name: "John Doe",
           email: "john@gmail.com",
         }
       }
@@ -63,7 +62,6 @@ RSpec.describe Api::OrdersController do
         expect(order.order_menus[1].quantity).to eq @params[:menu_quantities][1]
         expect(order.order_menus[0].total_price).to eq @params[:menu_quantities][0] * @menus[0].price
         expect(order.order_menus[1].total_price).to eq @params[:menu_quantities][1] * @menus[1].price
-        expect(order.customer.name).to eq @params[:customer][:name]
         expect(order.customer.email).to eq @params[:customer][:email]
       end
 

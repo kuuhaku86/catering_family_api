@@ -1,6 +1,5 @@
 FactoryBot.define do
   factory :customer do
-    name { Faker::Name.name }
     email { Faker::Internet.email }
 
     trait :with_orders do
@@ -9,7 +8,6 @@ FactoryBot.define do
   end
 
   factory :invalid_customer, parent: :customer do
-    name { nil }
     email { nil }
 
     orders { |customer| [] }

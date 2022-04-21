@@ -3,7 +3,7 @@ class Order < ApplicationRecord
     :new => "NEW",
     :paid => "PAID",
     :canceled => "CANCELED"
-  }
+  }.freeze
 
   belongs_to :customer
   has_many :order_menus

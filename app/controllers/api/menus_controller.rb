@@ -87,6 +87,7 @@ class Api::MenusController < ApplicationController
   end
 
   private
+
   def get_menu_data(params)
     if params[:category_id].present?
       @data = Category.find(params[:category_id])

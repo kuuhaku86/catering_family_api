@@ -196,6 +196,12 @@
       success: function(data) {
         $('#create-modal').modal('hide');
         alert("Menu created");
+
+        $('input:checkbox').removeAttr('checked');
+        $('#create-modal input[name="name"]').val("");
+        $('#create-modal textarea').val("");
+        $('#create-modal input[name="price"]').val("");
+
         getMenus();
       },
       error: function(data) {

@@ -133,6 +133,7 @@
       success: function(data) {
         $('#create-modal').modal('hide');
         alert("Category created");
+        $('#create-modal input').val("");
         getCategories();
       },
       error: function(data) {

@@ -227,8 +227,6 @@
       menu_quantities: menu_quantities
     };
 
-    console.log(payload);
-
     $.ajax({
       url: url,
       type: 'POST',
@@ -237,6 +235,11 @@
       success: function(data) {
         $('#create-modal').modal('hide');
         alert("Order created");
+
+        $('input[type="checkbox"]').prop('checked' , false);
+        $('#create-modal input[name="email"]').val("");
+        $('#create-modal input[name="quantity_menus[]"]').val("");
+
         getOrders();
       },
       error: function(data) {

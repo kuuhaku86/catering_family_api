@@ -25,7 +25,9 @@ RSpec.describe Category, type: :model do
     context 'with invalid attributes' do
       it 'invalid without name' do
         category = FactoryBot.build(:invalid_category)
+
         category.valid?
+
         expect(category.errors[:name]).to include("can't be blank")
       end
 

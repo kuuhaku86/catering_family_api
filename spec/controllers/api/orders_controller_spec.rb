@@ -47,15 +47,12 @@ RSpec.describe Api::OrdersController do
         post :create, params: @params, as: :json
 
         final_count = Order.count
-
         expect(final_count - initial_count).to eq(1)
-
         order = Order.last
         total_price = 0
         (0..@params[:menu_ids].length - 1).each do |i|
           total_price += @params[:menu_quantities][i].to_f * @menus[i].price.to_f
         end
-
         expect(order.total_price).to eq total_price
         expect(order.status).to eq Order::STATUS[:new]
         expect(order.order_menus[0].quantity).to eq @params[:menu_quantities][0]
@@ -81,7 +78,6 @@ RSpec.describe Api::OrdersController do
         post :create, params: params, as: :json
 
         final_count = Order.count
-
         expect(final_count - initial_count).to eq(0)
         expect(response.body).to eq ({ message: "Menu not found" }.to_json)
         expect(response.status).to eq 404
@@ -96,7 +92,6 @@ RSpec.describe Api::OrdersController do
         post :create, params: params, as: :json
 
         final_count = Order.count
-
         expect(final_count - initial_count).to eq(0)
         expect(response.body).to eq ({ message: "Parameter missing" }.to_json)
         expect(response.status).to eq 422
@@ -116,7 +111,6 @@ RSpec.describe Api::OrdersController do
         put :update, params: { id: @order.id, status: Order::STATUS[:paid] }, as: :json
 
         final_count = Order.where(status: Order::STATUS[:paid]).count()
-
         expect(final_count - initial_count).to eq 1
         expect(response.body).to eq ({ message: "Order updated" }.to_json)
       end
@@ -127,7 +121,6 @@ RSpec.describe Api::OrdersController do
         put :update, params: { id: @order.id, status: Order::STATUS[:canceled] }, as: :json
 
         final_count = Order.where(status: Order::STATUS[:canceled]).count()
-
         expect(final_count - initial_count).to eq 1
         expect(response.body).to eq ({ message: "Order updated" }.to_json)
       end
@@ -140,7 +133,6 @@ RSpec.describe Api::OrdersController do
         put :update, params: { id: 999, status: Order::STATUS[:paid] }, as: :json
 
         final_count = Order.where(status: Order::STATUS[:paid]).count()
-
         expect(final_count - initial_count).to eq 0
         expect(response.body).to eq ({ message: "Order not found" }.to_json)
         expect(response.status).to eq 404

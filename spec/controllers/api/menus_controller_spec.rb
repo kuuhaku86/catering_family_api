@@ -37,11 +37,8 @@ RSpec.describe Api::MenusController do
         post :create, params: @params
 
         final_count = Menu.count
-
         expect(final_count - initial_count).to eq(1)
-
         menu = Menu.last
-
         expect(menu.name).to eq 'Nasi Kuning'
         expect(menu.description).to eq 'Nasi dengan warna kuning'
         expect(menu.price).to eq 10000
@@ -63,7 +60,6 @@ RSpec.describe Api::MenusController do
         post :create, params: { menu: {} }
 
         final_count = Menu.count
-
         expect(final_count - initial_count).to eq(0)
         expect(response.body).to eq({ message: "Parameter missing" }.to_json)
         expect(response.status).to eq 422
@@ -71,13 +67,11 @@ RSpec.describe Api::MenusController do
 
       it "does not save duplicate name" do
         create(:menu, name: "Nasi Kuning", categories:[@categories[0]])
-
         initial_count = Menu.count
 
         post :create, params: @params
 
         final_count = Menu.count
-
         expect(final_count - initial_count).to eq(0)
         expect(response.body).to eq({ message: "Name has already been taken" }.to_json)
         expect(response.status).to eq 422
@@ -91,7 +85,6 @@ RSpec.describe Api::MenusController do
         post :create, params: params
 
         final_count = Menu.count
-
         expect(final_count - initial_count).to eq(0)
         expect(response.body).to eq({ message: "Price must be greater than or equal to 0.01" }.to_json)
         expect(response.status).to eq 422
@@ -119,7 +112,6 @@ RSpec.describe Api::MenusController do
         post :create, params: params
 
         final_count = Menu.count
-
         expect(final_count - initial_count).to eq(0)
         expect(response.body).to eq({ message: "Parameter missing" }.to_json)
         expect(response.status).to eq 422
@@ -160,17 +152,13 @@ RSpec.describe Api::MenusController do
       it "update the all attributes menu in the database" do
         params = DeepClone.clone @params
         params[:id] = @menu.id
-
         initial_count = Menu.count
 
         put :update, params: params
 
         final_count = Menu.count
-
         expect(final_count - initial_count).to eq(0)
-
         menu = Menu.last
-
         expect(menu.name).to eq @params[:name]
         expect(menu.description).to eq @params[:description]
         expect(menu.price).to eq @params[:price]
@@ -186,7 +174,6 @@ RSpec.describe Api::MenusController do
         put :update, params: params
 
         menu = Menu.last
-
         expect(menu.name).to eq @params[:name]
         expect(menu.description).to eq @menu.description
         expect(menu.price).to eq @menu.price
@@ -202,7 +189,6 @@ RSpec.describe Api::MenusController do
         put :update, params: params
 
         menu = Menu.last
-
         expect(menu.name).to eq @menu.name
         expect(menu.description).to eq @menu.description
         expect(menu.price).to eq @params[:price]
@@ -218,7 +204,6 @@ RSpec.describe Api::MenusController do
         put :update, params: params
 
         menu = Menu.last
-
         expect(menu.name).to eq @menu.name
         expect(menu.description).to eq @params[:description]
         expect(menu.price).to eq @menu.price
@@ -259,7 +244,6 @@ RSpec.describe Api::MenusController do
 
         menu = Menu.last
         order_menu = OrderMenu.last
-
         expect(menu.price).to eq @params[:price]
         expect(order_menu.total_price).to eq(3 * @menu.price)
       end

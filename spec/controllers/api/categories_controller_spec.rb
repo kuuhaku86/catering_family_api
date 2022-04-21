@@ -100,7 +100,6 @@ RSpec.describe Api::CategoriesController do
         post :create, params: @params
 
         final_count = Category.count
-
         expect(final_count - initial_count).to eq(1)
         expect(Category.last.name).to eq 'Beverages'
       end
@@ -119,7 +118,6 @@ RSpec.describe Api::CategoriesController do
         post :create, params: {}
 
         final_count = Category.count
-
         expect(final_count - initial_count).to eq(0)
         expect(response.body).to eq({ message: "Parameter missing" }.to_json)
         expect(response.status).to eq 422
@@ -133,7 +131,6 @@ RSpec.describe Api::CategoriesController do
         post :create, params: @params
 
         final_count = Category.count
-
         expect(final_count - initial_count).to eq(0)
         expect(response.body).to eq({ message: "Name has already been taken" }.to_json)
         expect(response.status).to eq 422
@@ -157,7 +154,6 @@ RSpec.describe Api::CategoriesController do
         put :update, params: @params
 
         final_count = Category.count
-
         expect(final_count - initial_count).to eq(0)
         expect(Category.last.name).to eq 'Food'
       end
@@ -217,7 +213,6 @@ RSpec.describe Api::CategoriesController do
         delete :destroy, params: @params
 
         final_count = Category.where(soft_deleted: true).count
-
         expect(final_count - initial_count).to eq(1)
         expect(Category.last.soft_deleted).to eq true
       end

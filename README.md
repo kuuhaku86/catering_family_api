@@ -330,7 +330,7 @@ For the API, we will use some Object that can be a JSON response for the REST AP
     "name": "Nasi Uduk",
     "description": "Nasi yang mantab",
     "price": 10000.5,
-    "categories": [1, 2],
+    "categories": [1, 2]
   }
 }
         </pre>

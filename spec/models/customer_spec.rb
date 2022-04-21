@@ -17,13 +17,17 @@ RSpec.describe Customer, type: :model do
     context 'with invalid attributes' do
       it 'invalid without email' do
         customer = FactoryBot.build(:invalid_customer)
+
         customer.valid?
+
         expect(customer.errors[:email]).to include("can't be blank")
       end
 
       it 'invalid with invalid email' do
         customer = FactoryBot.build(:invalid_customer, email: 'halo@gigih')
+
         customer.valid?
+
         expect(customer.errors[:email]).to include("is invalid")
       end
 

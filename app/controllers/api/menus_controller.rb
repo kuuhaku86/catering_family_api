@@ -2,17 +2,22 @@ class Api::MenusController < ApplicationController
   skip_before_action :verify_authenticity_token
 
   def index
-    @data = nil
-
-    if params[:category_id].present?
-      @data = Category.find(params[:category_id]).menus
-    else
-      @data = Menu.all
-    end
-
-    @data = @data.select { |menu| menu.soft_deleted == false }
+    @data = get_menu_data(params)
 
     render json: @data.to_json(include: [:categories])
+  end
+
+  def get_menu_data(params)
+    if params[:category_id].present?
+      @data = Category.find(params[:category_id])
+                .menus
+                .where(soft_deleted: false)
+                .all
+    else
+      @data = Menu.where(soft_deleted: false).all
+    end
+
+    @data
   end
 
   def create

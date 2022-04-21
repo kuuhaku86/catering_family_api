@@ -33,11 +33,7 @@ class Api::MenusController < ApplicationController
         end
       end
 
-      if @data.save
-        render json: @data, status: :created
-      else
-        raise @data.errors.full_messages.join(', ')
-      end
+      save_data(@data, @data, :created)
     rescue NoMethodError
       render json: {
         message: "Parameter missing"
@@ -89,11 +85,7 @@ class Api::MenusController < ApplicationController
         end
       end
 
-      if menu.save
-        render json: { message: "Menu updated" }, status: :ok
-      else
-        raise menu.errors.full_messages.join(', ')
-      end
+      save_data(menu, { message: "Menu updated" }, :ok)
     rescue ActiveRecord::RecordNotFound => e
       render json: {
         message: "Menu not found"
@@ -115,11 +107,7 @@ class Api::MenusController < ApplicationController
 
       menu.soft_deleted = true
 
-      if menu.save
-        render json: { message: "Menu deleted" }, status: :ok
-      else
-        raise menu.errors.full_messages.join(', ')
-      end
+      save_data(menu, { message: "Menu deleted" }, :ok)
     rescue ActiveRecord::RecordNotFound => e
       render json: {
         message: "Menu not found"

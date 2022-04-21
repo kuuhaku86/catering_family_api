@@ -121,7 +121,7 @@ RSpec.describe Api::MenusController do
         final_count = Menu.count
 
         expect(final_count - initial_count).to eq(0)
-        expect(response.body).to eq({ message: "Categories can't be blank" }.to_json)
+        expect(response.body).to eq({ message: "Parameter missing" }.to_json)
         expect(response.status).to eq 422
       end
     end

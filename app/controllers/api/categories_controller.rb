@@ -9,7 +9,7 @@ class Api::CategoriesController < ApplicationController
 
   def show
     begin
-      @data = Category.find(params[:id])
+      @data = Category.find_by!(id: params[:id], soft_deleted: false)
 
       render json: @data, status: :ok
     rescue
@@ -43,7 +43,7 @@ class Api::CategoriesController < ApplicationController
 
   def update
     begin
-      category = Category.find(params[:id])
+      category = Category.find_by!(id: params[:id], soft_deleted: false)
 
       check_params(params)
 
@@ -67,7 +67,7 @@ class Api::CategoriesController < ApplicationController
 
   def destroy
     begin
-      category = Category.find(params[:id])
+      category = Category.find_by!(id: params[:id], soft_deleted: false)
 
       category.soft_deleted = true
 

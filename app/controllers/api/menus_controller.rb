@@ -103,7 +103,7 @@ class Api::MenusController < ApplicationController
 
   def add_categories(menu, categories)
     categories.each do |category_id|
-      category = Category.find(category_id)
+      category = Category.find_by!(id: category_id, soft_deleted: false)
 
       menu.categories << category
     end

@@ -1,5 +1,5 @@
 class ApplicationController < ActionController::Base
-  def save_data(data, message, status)
+  def save_data(data:, message:, status:)
     if data.save
       render json: message, status: status
     else

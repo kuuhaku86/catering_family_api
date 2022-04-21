@@ -29,7 +29,11 @@ class Api::CategoriesController < ApplicationController
         name: category[:name],
       )
 
-      save_data(@data, @data, :created)
+      save_data(
+        data: @data, 
+        message: @data, 
+        status: :created
+      )
     rescue => e
       render json: {
         message: e.message
@@ -45,7 +49,11 @@ class Api::CategoriesController < ApplicationController
 
       category.name = params[:name]
 
-      save_data(category, { message: "Category updated" }, :ok)
+      save_data(
+        data: category, 
+        message: { message: "Category updated" }, 
+        status: :ok
+      )
     rescue ActiveRecord::RecordNotFound => e
       render json: {
         message: "Category not found"
@@ -63,7 +71,11 @@ class Api::CategoriesController < ApplicationController
 
       category.soft_deleted = true
 
-      save_data(category, { message: "Category deleted" }, :ok)
+      save_data(
+        data: category, 
+        message: { message: "Category deleted" },
+        status: :ok
+      )
     rescue ActiveRecord::RecordNotFound => e
       render json: {
         message: "Category not found"

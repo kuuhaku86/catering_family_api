@@ -23,9 +23,7 @@ class Api::CategoriesController < ApplicationController
     begin
       category = params[:category]
 
-      if category.nil? || category[:name].nil?
-        raise "Parameter missing"
-      end
+      check_params(category)
 
       @data = Category.new(
         name: category[:name],
@@ -47,9 +45,7 @@ class Api::CategoriesController < ApplicationController
     begin
       category = Category.find(params[:id])
 
-      if params[:name].nil?
-        raise "Parameter missing"
-      end
+      check_params(params)
 
       category.name = params[:name]
 
@@ -88,6 +84,13 @@ class Api::CategoriesController < ApplicationController
       render json: {
         message: e.message
       }, status: :unprocessable_entity
+    end
+  end
+  
+  private
+  def check_params(params)
+    if params.nil? || params[:name].nil?
+      raise "Parameter missing"
     end
   end
 end

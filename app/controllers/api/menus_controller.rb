@@ -7,19 +7,6 @@ class Api::MenusController < ApplicationController
     render json: @data.to_json(include: [:categories])
   end
 
-  def get_menu_data(params)
-    if params[:category_id].present?
-      @data = Category.find(params[:category_id])
-                .menus
-                .where(soft_deleted: false)
-                .all
-    else
-      @data = Menu.where(soft_deleted: false).all
-    end
-
-    @data
-  end
-
   def create
     begin
       menu = params[:menu]
@@ -77,6 +64,42 @@ class Api::MenusController < ApplicationController
     end
   end
 
+  def destroy
+    begin
+      menu = Menu.find(params[:id])
+
+      menu.soft_deleted = true
+
+      save_data(
+        data: menu, 
+        message: { message: "Menu deleted" },
+        status: :ok
+      )
+    rescue ActiveRecord::RecordNotFound => e
+      render json: {
+        message: "Menu not found"
+      }, status: :not_found
+    rescue => e
+      render json: {
+        message: e.message
+      }, status: :unprocessable_entity
+    end
+  end
+
+  private
+  def get_menu_data(params)
+    if params[:category_id].present?
+      @data = Category.find(params[:category_id])
+                .menus
+                .where(soft_deleted: false)
+                .all
+    else
+      @data = Menu.where(soft_deleted: false).all
+    end
+
+    @data
+  end
+
   def add_categories(menu, categories)
     categories.each do |category_id|
       category = Category.find(category_id)
@@ -110,28 +133,6 @@ class Api::MenusController < ApplicationController
           menu.send("#{column_name}=", params[column_name])
         end
       end
-    end
-  end
-
-  def destroy
-    begin
-      menu = Menu.find(params[:id])
-
-      menu.soft_deleted = true
-
-      save_data(
-        data: menu, 
-        message: { message: "Menu deleted" },
-        status: :ok
-      )
-    rescue ActiveRecord::RecordNotFound => e
-      render json: {
-        message: "Menu not found"
-      }, status: :not_found
-    rescue => e
-      render json: {
-        message: e.message
-      }, status: :unprocessable_entity
     end
   end
 end

@@ -87,19 +87,14 @@ class Api::MenusController < ApplicationController
 
   def check_if_updated_attributes_exist(params)
     column_names = [:name, :price, :description, :categories]
-    attributes_exist = false
 
     column_names.each do |column_name|
       if !params[column_name].nil?
-        attributes_exist = true
-
-        break
+        return
       end
     end
 
-    if !attributes_exist
-      raise "Parameter missing"
-    end
+    raise "Parameter missing"
   end
 
   def update_menu(menu, params)

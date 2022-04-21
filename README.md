@@ -16,6 +16,8 @@ A project with Ruby on Rails framework and using REST API for its data communica
 
 ![ui-consumer](app/assets/images/ui-consumer.png)
 
+The URI for the UI API consumer can be found at the bottom row of each User Story, you just need to copy the URI after the base URL and go to the page with a browser. 
+
 ## Installation
 
 ### Requirement
@@ -202,6 +204,8 @@ For the API, we will use some Object that can be a JSON response for the REST AP
 </table>
 
 ### User Story & API Contract
+
+For the Postman example of each API, you can download it [here](https://drive.google.com/file/d/1MK6F3gK5QO7tHvfBG-rGhBAikNA0aawg/view?usp=sharing)
 
 <table>
   <thead>

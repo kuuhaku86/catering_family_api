@@ -3,61 +3,17 @@ class Api::OrdersController < ApplicationController
 
   def index
     @data = Order.order(created_at: :desc).all
+    @data = get_order_relation(@data)
 
-    render json: @data.to_json(include: [{ order_menus: { include: :menu }}, :customer])
+    render json: @data
   end
 
   def index_revenue
-    @data = nil
-    optional_params = [:email, :max_price, :min_price, :max_date, :min_date]
-    param_exist = false
+    @data = get_order_revenue(params)
 
-    optional_params.each do |param|
-      if !params[param].nil?
-        param_exist = true
-        break
-      end
-    end
+    total_revenue = get_total_revenue(@data)
 
-
-    if !param_exist
-      @data = Order.where(
-        status: Order::STATUS[:paid],
-        created_at: Time.now.beginning_of_day..Time.now.end_of_day
-      ).all
-    else
-      @data = Order.where(
-        status: Order::STATUS[:paid],
-      ).all
-
-      if !params[:email].blank?
-        @data = @data. select { |order| order.customer.email.include? params[:email] }
-      end
-
-      if !params[:max_price].blank?
-        @data = @data. select { |order| order.total_price <= params[:max_price].to_i }
-      end
-
-      if !params[:min_price].blank?
-        @data = @data. select { |order| order.total_price >= params[:min_price].to_i }
-      end
-
-      if !params[:max_date].blank?
-        @data = @data. select { |order| order.created_at < params[:max_date].to_datetime + 1.day }
-      end
-
-      if !params[:min_date].blank?
-        @data = @data. select { |order| order.created_at >= params[:min_date].to_datetime }
-      end
-    end
-
-    total_revenue = 0
-
-    @data.each do |order|
-      total_revenue += order.total_price
-    end
-
-    @data = JSON.parse(@data.to_json(include: [{ order_menus: { include: :menu }}, :customer]))
+    @data = get_order_relation(@data)
 
     render json: {
       orders: @data,
@@ -67,16 +23,7 @@ class Api::OrdersController < ApplicationController
 
   def create
     ActiveRecord::Base.transaction do
-      customer = nil
-
-      if !Customer.exists?(email: params[:customer][:email])
-        customer = Customer.create!(
-          name: params[:customer][:name],
-          email: params[:customer][:email],
-        )
-      else
-        customer = Customer.where(email: params[:customer][:email]).first
-      end
+      customer = get_customer(params)
 
       menus = []
 
@@ -147,6 +94,96 @@ class Api::OrdersController < ApplicationController
       render json: {
         message: e.message
       }, status: :unprocessable_entity
+    end
+  end
+
+  private
+
+  def get_order_revenue(params)
+    @optional_params = [:email, :max_price, :min_price, :max_date, :min_date]
+    query_exist = check_if_query_exist(params)
+
+    if !query_exist
+      data = Order.where(
+        status: Order::STATUS[:paid],
+        created_at: Time.now.beginning_of_day..Time.now.end_of_day
+      ).all
+    else
+      data = Order.where(
+        status: Order::STATUS[:paid],
+      ).all
+      
+      @optional_params.each do |param|
+        if !params[param].nil?
+          data = filter_data_by_param(data, param)
+        end
+      end
+    end
+
+    return data
+  end
+
+  def check_if_query_exist(params)
+    @optional_params.each do |param|
+      if !params[param].nil?
+        return true
+      end
+    end
+
+    return false
+  end
+
+  def filter_data_by_param(data, param)
+    case param
+    when :email
+      data = data. select { |order| order.customer.email.include? params[:email] }
+    when :max_price
+      data = data. select { |order| order.total_price <= params[:max_price].to_i }
+    when :min_price
+      data = data. select { |order| order.total_price >= params[:min_price].to_i }
+    when :max_date
+      data = data. select { |order| order.created_at < params[:max_date].to_datetime + 1.day }
+    when :min_date
+      data = data. select { |order| order.created_at >= params[:min_date].to_datetime }
+    end
+
+    data
+  end
+
+  def get_total_revenue(data)
+    total_revenue = 0
+
+    data.each do |order|
+      total_revenue += order.total_price
+    end
+
+    return total_revenue
+  end
+
+  def get_order_relation(data)
+    return JSON.parse(
+      data.to_json(
+        include: [
+          { 
+            order_menus: 
+            { 
+              include: :menu 
+            }
+          }, 
+          :customer
+        ]
+      )
+    )
+  end
+
+  def get_customer(params)
+    if !Customer.exists?(email: params[:customer][:email])
+      return Customer.create!(
+        name: params[:customer][:name],
+        email: params[:customer][:email],
+      )
+    else
+      return Customer.where(email: params[:customer][:email]).first
     end
   end
 end

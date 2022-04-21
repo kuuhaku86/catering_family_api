@@ -38,7 +38,7 @@ class Api::MenusController < ApplicationController
   def update
     begin
       attributes_exist = false
-      menu = Menu.find(params[:id])
+      menu = Menu.find_by!(id: params[:id], soft_deleted: false)
 
       check_if_updated_attributes_exist(params)
 
@@ -66,7 +66,7 @@ class Api::MenusController < ApplicationController
 
   def destroy
     begin
-      menu = Menu.find(params[:id])
+      menu = Menu.find_by!(id: params[:id], soft_deleted: false)
 
       menu.soft_deleted = true
 
